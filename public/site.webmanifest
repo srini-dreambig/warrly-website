@@ -1,0 +1,24 @@
+{
+  "name": "Warrly",
+  "short_name": "Warrly",
+  "description": "Every warranty, kept. Capture receipts, track coverage, file claims with evidence ready.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fefef6",
+  "theme_color": "#0f5d50",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/brand/images/warrly-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/images/warrly-mark.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

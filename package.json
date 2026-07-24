@@ -1,10 +1,12 @@
 {
-  "name": "warrly-marketing",
+  "name": "warrly-website",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "sitemap": "node scripts/generate-sitemap.mjs",
+    "prebuild": "npm run sitemap",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
@@ -12,7 +14,9 @@
   "dependencies": {
     "qrcode": "^1.5.4",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-helmet-async": "^2.0.5",
+    "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
     "@types/node": "^24.13.2",
@@ -21,6 +25,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "oxlint": "^1.71.0",
+    "playwright": "^1.61.1",
     "typescript": "~6.0.2",
     "vite": "^8.1.1"
   }

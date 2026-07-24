@@ -1,32 +1,48 @@
-# React + TypeScript + Vite
+# Warrly website
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Marketing site for [Warrly](https://www.warrly.in) — warranty vault for Indian households and teams.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Vite + React + TypeScript
+- React Router
+- Deployed on Vercel
 
-## React Compiler
+## Local development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+cp .env.example .env   # optional overrides
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Production build
+
+```bash
+npm run build
+npm run preview
+```
+
+`prebuild` regenerates `public/sitemap.xml` from all marketing routes.
+
+## Vercel
+
+1. Import this repo in Vercel (root = repository root).
+2. Framework preset: Vite (or leave auto).
+3. Build command: `npm run build`
+4. Output directory: `dist`
+5. Set environment variables from `.env.example` (especially `VITE_SITE_URL`).
+
+`vercel.json` handles SPA rewrites so deep links like `/privacy` and `/business/sites` work.
+
+## SEO
+
+- Per-route titles/descriptions via `react-helmet-async` (`src/components/Seo.tsx`)
+- `public/robots.txt` + generated `public/sitemap.xml`
+- Open Graph / Twitter cards + JSON-LD in `index.html` (defaults) and Helmet (per page)
+- Brand assets under `public/brand/`
+
+## Notes
+
+- Do not commit `.env` (secrets / deploy-specific URLs).
+- App binary / backend live in a separate repository — this repo is website-only.

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Smart store redirect helper — fine to crawl
+Allow: /download/
+
+Sitemap: https://www.warrly.in/sitemap.xml

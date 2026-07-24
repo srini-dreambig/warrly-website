@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Download Warrly</title>
+    <script>
+      (function () {
+        var ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        var android = /Android/i.test(navigator.userAgent);
+        var appStore = "https://apps.apple.com/app/warrly";
+        var playStore = "https://play.google.com/store/apps/details?id=com.warrly.app";
+        var fallback = "/download";
+        if (ios) location.replace(appStore);
+        else if (android) location.replace(playStore);
+        else location.replace(fallback);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to the app store… <a href="/download">Continue</a></p>
+  </body>
+</html>
