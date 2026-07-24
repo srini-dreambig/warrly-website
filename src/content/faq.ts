@@ -22,7 +22,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Where can I download it?",
-        a: "iOS, Android, and the web app. Open the Download page, scan the QR, or use the App Store / Google Play / web links.",
+        a: "The app is launching soon. Join the waitlist on this site (scan the QR or open Waitlist). When iOS, Android, and web go live, we will email everyone on the list — then Download will open the stores directly.",
       },
     ],
   },

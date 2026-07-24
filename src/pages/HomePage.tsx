@@ -4,6 +4,9 @@ import { config } from "../config";
 import { CtaBand } from "../components/CtaBand";
 import { DownloadQr } from "../components/DownloadQr";
 
+const appPath = config.getAppPath;
+const appLabel = config.getAppLabel;
+
 const capabilities = [
   {
     to: "/personal/camera-extract",
@@ -43,8 +46,8 @@ export function HomePage() {
               warranty window, and assemble claim-ready evidence before the service centre asks for it.
             </p>
             <div className="hero-actions">
-              <Link className="btn btn-amber" to="/download">
-                Download free
+              <Link className="btn btn-amber" to={appPath}>
+                {appLabel}
               </Link>
               <Link className="btn btn-forest" to="/personal">
                 See how it works
@@ -205,8 +208,8 @@ export function HomePage() {
                 ₹0 <small>/ forever</small>
               </div>
               <p className="desc">5 items, reminders, basic claims. Grow slots with referrals.</p>
-              <Link className="btn btn-forest" to="/download">
-                Download free
+              <Link className="btn btn-forest" to={appPath}>
+                {appLabel}
               </Link>
             </article>
             <article className="plan featured">
@@ -236,15 +239,25 @@ export function HomePage() {
       <section className="download">
         <div className="wrap download-grid">
           <div>
-            <h2>Get Warrly before the next failure</h2>
-            <p>Scan the QR on your phone, or open the stores and web app directly.</p>
+            <h2>{config.appLive ? "Get Warrly before the next failure" : "Join before launch day"}</h2>
+            <p>
+              {config.appLive
+                ? "Scan the QR on your phone, or open the stores and web app directly."
+                : "The app is not on the stores yet. Scan the QR to join the waitlist — we will notify you at launch."}
+            </p>
             <div className="store-row">
-              <Link className="btn btn-amber" to="/download">
-                Download page
+              <Link className="btn btn-amber" to={appPath}>
+                {config.appLive ? "Download page" : "Join the waitlist"}
               </Link>
-              <a className="btn btn-ghost-light" href={config.webAppUrl} target="_blank" rel="noreferrer">
-                Web app
-              </a>
+              {config.appLive ? (
+                <a className="btn btn-ghost-light" href={config.webAppUrl} target="_blank" rel="noreferrer">
+                  Web app
+                </a>
+              ) : (
+                <Link className="btn btn-ghost-light" to="/plans">
+                  See plans
+                </Link>
+              )}
             </div>
           </div>
           <DownloadQr id="home-download" />

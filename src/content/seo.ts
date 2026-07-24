@@ -34,6 +34,12 @@ export const staticPagesSeo: PageSeo[] = [
       "Compare Free, Plus, and Pro. Start with 5 free items, then unlock higher limits and business tooling for multi-site teams.",
   },
   {
+    path: "/waitlist",
+    title: "Join the Warrly waitlist",
+    description:
+      "The Warrly app is launching soon. Join the waitlist with your name, email, phone, and platform preference so we can notify you at launch.",
+  },
+  {
     path: "/download",
     title: "Download Warrly | iOS, Android & Web",
     description:

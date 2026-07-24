@@ -13,6 +13,7 @@ import { PlansPage } from "./pages/PlansPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { ReferralPage } from "./pages/ReferralPage";
 import { TermsPage } from "./pages/TermsPage";
+import { WaitlistPage } from "./pages/WaitlistPage";
 import "./styles.css";
 import "./investors.css";
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/plans" element={<PlansPage />} />
           <Route path="/download" element={<DownloadPage />} />
+          <Route path="/waitlist" element={<WaitlistPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/faq" element={<FaqPage />} />
           <Route path="/investors" element={<InvestorsPage />} />

@@ -4,6 +4,9 @@ import { config } from "./config";
 import { BrandLockup } from "./components/BrandLockup";
 import { Seo } from "./components/Seo";
 
+const appPath = config.getAppPath;
+const appCta = config.appLive ? "Sign up" : "Join waitlist";
+
 type MegaKey = "personal" | "business" | "company" | null;
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -50,8 +53,12 @@ export function Layout({ children }: { children: ReactNode }) {
     <>
       <Seo />
       <div className="promo">
-        Free for your first 5 items. No card required.
-        <Link to="/plans">See plans →</Link>
+        {config.appLive
+          ? "Free for your first 5 items. No card required."
+          : "App launching soon — join the waitlist for early access."}
+        <Link to={config.appLive ? "/plans" : appPath}>
+          {config.appLive ? "See plans →" : "Join waitlist →"}
+        </Link>
       </div>
 
       <div ref={shellRef} className={`nav-shell is-light${menuOpen ? " open" : ""}`}>
@@ -107,8 +114,13 @@ export function Layout({ children }: { children: ReactNode }) {
               <a className="nav-login" href={config.webAppUrl}>
                 Log in
               </a>
-              <Link className="btn btn-forest btn-sm" to="/download" onClick={closeAll} style={{ padding: "10px 18px", fontSize: 14 }}>
-                Sign up
+              <Link
+                className="btn btn-forest btn-sm"
+                to={appPath}
+                onClick={closeAll}
+                style={{ padding: "10px 18px", fontSize: 14 }}
+              >
+                {appCta}
               </Link>
               <button
                 type="button"
@@ -256,8 +268,8 @@ export function Layout({ children }: { children: ReactNode }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/download" onClick={closeAll}>
-                    Get the app
+                  <Link to={appPath} onClick={closeAll}>
+                    {config.appLive ? "Get the app" : "Join waitlist"}
                   </Link>
                 </li>
               </ul>
@@ -377,8 +389,8 @@ export function Layout({ children }: { children: ReactNode }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/download" onClick={closeAll}>
-                    Get Warrly Business
+                  <Link to={appPath} onClick={closeAll}>
+                    {config.appLive ? "Get Warrly Business" : "Join waitlist"}
                   </Link>
                 </li>
               </ul>
@@ -464,8 +476,8 @@ export function Layout({ children }: { children: ReactNode }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/download" onClick={closeAll}>
-                    Download
+                  <Link to={appPath} onClick={closeAll}>
+                    {config.appLive ? "Download" : "Waitlist"}
                   </Link>
                 </li>
               </ul>
@@ -511,7 +523,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Link to="/plans">Plans</Link>
               </li>
               <li>
-                <Link to="/download">Download</Link>
+                <Link to={appPath}>{config.appLive ? "Download" : "Waitlist"}</Link>
               </li>
             </ul>
           </div>
@@ -536,17 +548,33 @@ export function Layout({ children }: { children: ReactNode }) {
             </ul>
           </div>
           <div>
-            <h4>Get the app</h4>
+            <h4>{config.appLive ? "Get the app" : "Early access"}</h4>
             <ul>
-              <li>
-                <a href={config.appStoreUrl}>App Store</a>
-              </li>
-              <li>
-                <a href={config.playStoreUrl}>Google Play</a>
-              </li>
-              <li>
-                <a href={config.webAppUrl}>Web app</a>
-              </li>
+              {config.appLive ? (
+                <>
+                  <li>
+                    <a href={config.appStoreUrl}>App Store</a>
+                  </li>
+                  <li>
+                    <a href={config.playStoreUrl}>Google Play</a>
+                  </li>
+                  <li>
+                    <a href={config.webAppUrl}>Web app</a>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to={appPath}>Join waitlist</Link>
+                  </li>
+                  <li>
+                    <Link to="/plans">See plans</Link>
+                  </li>
+                  <li>
+                    <Link to="/contact">Contact</Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
           <div>

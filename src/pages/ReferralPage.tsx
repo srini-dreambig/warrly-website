@@ -16,8 +16,8 @@ export function ReferralPage() {
               lead.
             </p>
             <div className="hero-actions">
-              <Link className="btn btn-amber" to="/download">
-                Start free
+              <Link className="btn btn-amber" to="/waitlist">
+                Join waitlist
               </Link>
               <Link className="btn btn-forest" to="/plans">
                 See plans

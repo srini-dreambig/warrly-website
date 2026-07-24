@@ -23,10 +23,30 @@ VITE_SUPPORT_EMAIL=info@dataplexor.com
 5. Add custom domain `www.warrly.in` (and apex if needed) in Vercel → Domains.
 6. After go-live, submit `https://www.warrly.in/sitemap.xml` in [Google Search Console](https://search.google.com/search-console).
 
+## Waitlist (until the app is live)
+
+`VITE_APP_LIVE` defaults to off. QR codes and Download CTAs go to `/waitlist`.
+
+Serverless endpoint: `POST /api/waitlist` (`api/waitlist.js`).
+
+Set in Vercel (Production):
+
+```
+VITE_APP_LIVE=false
+VITE_DOWNLOAD_URL=https://www.warrly.in/waitlist
+WAITLIST_NOTIFY_EMAIL=info@dataplexor.com
+# optional durable pipeline (Sheets / Zapier / Make / your CRM):
+WAITLIST_WEBHOOK_URL=https://...
+```
+
+On first FormSubmit delivery, confirm the activation email sent to `WAITLIST_NOTIFY_EMAIL`. After that, each signup arrives as email with a JSON payload you can import later.
+
+When stores ship, set `VITE_APP_LIVE=true` and point `VITE_DOWNLOAD_URL` back to `/download` (or store smart-link).
+
 ## Verify
 
 - `/` loads
+- `/waitlist` form submits successfully
 - `/privacy`, `/personal/claims`, `/business/sites` deep-link without 404
 - `/robots.txt` and `/sitemap.xml` return text/xml
-- View source shows title + description; client navigation updates them
 - OG image resolves: `/brand/illustrations/welcome_account.png`

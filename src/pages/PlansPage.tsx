@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom";
 import { CtaBand } from "../components/CtaBand";
+import { config } from "../config";
 
 export function PlansPage() {
+  const appPath = config.getAppPath;
+  const join = config.appLive ? "Download free" : "Join waitlist";
+
   return (
     <main className="page">
       <section className="page-hero page-hero-solo">
         <div className="wrap page-hero-copy">
           <h1>Choose capacity that matches your vault</h1>
           <p className="lead">
-            Start free with five items. Unlock more with referrals, or upgrade when your household or team needs higher limits and business tooling.
+            {config.appLive
+              ? "Start free with five items. Upgrade when your household or team needs higher limits and business tooling."
+              : "Plans are ready for launch. Join the waitlist now — Free starts at five items when the app ships."}
           </p>
         </div>
       </section>
@@ -24,13 +30,12 @@ export function PlansPage() {
               <p className="desc">For households starting a vault.</p>
               <ul className="plan-features">
                 <li>Up to 5 items</li>
-                <li>+1 item slot per successful referral</li>
                 <li>Camera & document capture</li>
                 <li>Reminders at 30 / 7 / 1 day</li>
                 <li>Basic claims workflow</li>
               </ul>
-              <Link className="btn btn-forest" to="/download">
-                Download free
+              <Link className="btn btn-forest" to={appPath}>
+                {join}
               </Link>
             </article>
             <article className="plan featured" id="plus">
@@ -42,12 +47,11 @@ export function PlansPage() {
               <ul className="plan-features">
                 <li>Higher item capacity</li>
                 <li>Richer reminder controls</li>
-                <li>Priority extract</li>
                 <li>Household sharing</li>
                 <li>Evidence packs for claims</li>
               </ul>
-              <Link className="btn btn-amber" to="/download">
-                Start Plus
+              <Link className="btn btn-amber" to={appPath}>
+                {config.appLive ? "Start Plus" : "Join waitlist"}
               </Link>
             </article>
             <article className="plan" id="pro">
@@ -63,8 +67,8 @@ export function PlansPage() {
                 <li>Vendors & vendor portal</li>
                 <li>Book value & depreciation exports</li>
               </ul>
-              <Link className="btn btn-forest" to="/download">
-                Start Pro
+              <Link className="btn btn-forest" to={appPath}>
+                {config.appLive ? "Start Pro" : "Join waitlist"}
               </Link>
             </article>
           </div>

@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { config } from "../config";
 import { DownloadQr } from "../components/DownloadQr";
 
 export function DownloadPage() {
+  if (!config.appLive) {
+    return <Navigate to="/waitlist?src=download" replace />;
+  }
+
   return (
     <main className="page">
       <section className="download download-page">

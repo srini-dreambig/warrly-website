@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { config } from "../config";
 
 type Props = {
   title?: string;
@@ -9,8 +10,10 @@ type Props = {
 
 export function CtaBand({
   title = "Ready when the unexpected happens",
-  lead = "Start free with five items. Build your vault before you need it.",
-  primary = { to: "/download", label: "Download Warrly" },
+  lead = config.appLive
+    ? "Start free with five items. Build your vault before you need it."
+    : "The app is launching soon. Join the waitlist and we will notify you first.",
+  primary = { to: config.getAppPath, label: config.getAppCta },
   secondary = { to: "/plans", label: "Compare plans" },
 }: Props) {
   return (

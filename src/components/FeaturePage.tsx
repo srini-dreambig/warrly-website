@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { FeatureBlock, FeatureFaq, FeaturePageContent } from "../content/features";
+import { config } from "../config";
 import { CtaBand } from "./CtaBand";
 
 type Layout = "hub" | "steps" | "timeline" | "story" | "record" | "ops" | "trust";
@@ -19,12 +20,10 @@ function resolveLayout(page: FeaturePageContent): Layout {
 
 function Hero({
   page,
-  primary,
   secondaryTo,
   secondaryLabel,
 }: {
   page: FeaturePageContent;
-  primary: string;
   secondaryTo: string;
   secondaryLabel: string;
 }) {
@@ -36,8 +35,8 @@ function Hero({
           <h1>{page.title}</h1>
           <p className="lead">{page.lead}</p>
           <div className="hero-actions">
-            <Link className="btn btn-amber" to="/download">
-              {primary}
+            <Link className="btn btn-amber" to={config.getAppPath}>
+              {config.getAppLabel}
             </Link>
             <Link className="btn btn-forest" to={secondaryTo}>
               {secondaryLabel}
@@ -542,15 +541,13 @@ function TrustBody({ page }: { page: FeaturePageContent }) {
 
 export function FeaturePage({ page }: { page: FeaturePageContent }) {
   const layout = resolveLayout(page);
-  const primary =
-    layout === "hub" ? "Download free" : layout === "story" ? "Start a vault" : "Download the app";
   const secondaryTo = layout === "ops" ? "/plans#pro" : "/plans";
   const secondaryLabel =
     layout === "ops" ? "See Pro plans" : layout === "hub" ? "Compare plans" : "See plans";
 
   return (
     <main className={`page feat-page feat-page--${layout}`}>
-      <Hero page={page} primary={primary} secondaryTo={secondaryTo} secondaryLabel={secondaryLabel} />
+      <Hero page={page} secondaryTo={secondaryTo} secondaryLabel={secondaryLabel} />
       {layout === "hub" ? <HubBody page={page} /> : null}
       {layout === "steps" ? <StepsBody page={page} /> : null}
       {layout === "timeline" ? <TimelineBody page={page} /> : null}
