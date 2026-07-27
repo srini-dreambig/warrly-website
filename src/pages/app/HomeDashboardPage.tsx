@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { AlertTriangle, Bell, ClipboardList, IndianRupee, Package } from "lucide-react";
 import { Link } from "react-router-dom";
+import { KpiCard } from "../../components/KpiCard";
 import {
   fetchClaims,
   fetchItems,
@@ -86,30 +88,32 @@ export function HomeDashboardPage() {
         {loading ? <p className="app-muted">Loading…</p> : null}
 
         {stats ? (
-          <div className="app-stats">
-            <article>
-              <strong>{money(stats.protected_value, stats.currency)}</strong>
-              <span>Protected value</span>
-            </article>
-            <article>
-              <strong>{stats.total_items}</strong>
-              <span>Items</span>
-            </article>
-            <article>
-              <strong>{stats.reminders_open}</strong>
-              <span>Open reminders</span>
-            </article>
-            <article>
-              <strong>{stats.open_claims}</strong>
-              <span>Open claims</span>
-            </article>
+          <div className="app-stats app-stats--hero">
+            <KpiCard
+              label="Protected value"
+              value={money(stats.protected_value, stats.currency)}
+              icon={IndianRupee}
+              tone="emphasis"
+            />
+            <KpiCard label="Items" value={stats.total_items} icon={Package} />
+            <KpiCard
+              label="Needs attention"
+              value={stats.needs_attention}
+              icon={AlertTriangle}
+              tone={stats.needs_attention > 0 ? "alert" : "default"}
+            />
+            <KpiCard label="Open reminders" value={stats.reminders_open} icon={Bell} />
+            <KpiCard label="Open claims" value={stats.open_claims} icon={ClipboardList} />
           </div>
         ) : null}
 
         <div className="app-home-grid">
-          <section className="app-panel">
+          <section className={`app-panel${attention.length ? " app-panel--priority" : ""}`}>
             <div className="app-items-head">
-              <h2>Needs attention</h2>
+              <h2>
+                <AlertTriangle size={16} strokeWidth={1.75} aria-hidden="true" />
+                Needs attention
+              </h2>
               <Link to={vaultInventoryPath()}>Inventory</Link>
             </div>
             {attention.length === 0 ? (
@@ -132,7 +136,10 @@ export function HomeDashboardPage() {
 
           <section className="app-panel">
             <div className="app-items-head">
-              <h2>Reminders</h2>
+              <h2>
+                <Bell size={16} strokeWidth={1.75} aria-hidden="true" />
+                Reminders
+              </h2>
               <Link to={vaultRemindersPath()}>View all</Link>
             </div>
             {reminders.length === 0 ? (
@@ -153,7 +160,10 @@ export function HomeDashboardPage() {
 
           <section className="app-panel">
             <div className="app-items-head">
-              <h2>Claims</h2>
+              <h2>
+                <ClipboardList size={16} strokeWidth={1.75} aria-hidden="true" />
+                Claims
+              </h2>
               <Link to={vaultClaimsPath()}>View all</Link>
             </div>
             {openClaims.length === 0 ? (
@@ -172,9 +182,12 @@ export function HomeDashboardPage() {
             )}
           </section>
 
-          <section className="app-panel">
+          <section className="app-panel app-panel--secondary">
             <div className="app-items-head">
-              <h2>Recent items</h2>
+              <h2>
+                <Package size={16} strokeWidth={1.75} aria-hidden="true" />
+                Recent items
+              </h2>
               <Link to={vaultInventoryPath()}>View all</Link>
             </div>
             {recent.length === 0 ? (

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { ArrowLeft, FilePlus2, Hash, QrCode, Tag, Trash2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ActionQrModal } from "../../components/ActionQrModal";
@@ -60,7 +61,8 @@ export function ItemDetailPage() {
       </Helmet>
       <div className="wrap app-detail">
         <Link className="app-back" to={vaultInventoryPath()}>
-          ← Back to inventory
+          <ArrowLeft size={14} strokeWidth={2} aria-hidden="true" />
+          Inventory
         </Link>
         {banner ? (
           <p className="app-banner" role="status">
@@ -85,18 +87,23 @@ export function ItemDetailPage() {
 
             <div className="app-handoff-row">
               <button type="button" className="btn btn-forest btn-sm" onClick={() => setHandoff("add_document")}>
-                Add document via QR
+                <FilePlus2 size={14} strokeWidth={2} aria-hidden="true" />
+                Add document
               </button>
               <button type="button" className="btn btn-forest btn-sm" onClick={() => setHandoff("capture_serial")}>
-                Capture serial via QR
+                <Hash size={14} strokeWidth={2} aria-hidden="true" />
+                Capture serial
               </button>
               <button type="button" className="btn btn-amber btn-sm" onClick={() => setHandoff("start_claim")}>
-                Start claim via QR
+                <QrCode size={14} strokeWidth={2} aria-hidden="true" />
+                Start claim
               </button>
               <Link className="btn btn-forest btn-sm" to={vaultItemOffersPath(itemId)}>
-                Coverage offers
+                <Tag size={14} strokeWidth={2} aria-hidden="true" />
+                Offers
               </Link>
               <button type="button" className="btn btn-forest btn-sm" onClick={() => void onDelete()} disabled={deleting}>
+                <Trash2 size={14} strokeWidth={2} aria-hidden="true" />
                 {deleting ? "Deleting…" : "Delete"}
               </button>
             </div>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Bell, Check, Clock3, ExternalLink, ShieldAlert } from "lucide-react";
 import { Link } from "react-router-dom";
 import { actionReminder, fetchReminders, type Reminder } from "../../lib/api";
 import { vaultItemPath } from "../../lib/hosts";
@@ -63,6 +64,7 @@ export function RemindersPage() {
 
         {!loading && reminders.length === 0 ? (
           <div className="app-empty">
+            <Bell size={28} strokeWidth={1.5} aria-hidden="true" />
             <p>All clear — no open reminders.</p>
           </div>
         ) : (
@@ -70,11 +72,20 @@ export function RemindersPage() {
             {reminders.map((r) => {
               const info = relDate(r.fire_at);
               return (
-                <li key={r.reminder_id} className="app-card">
+                <li key={r.reminder_id} className={`app-card${info.urgent ? " app-card--urgent" : ""}`}>
                   <div className="app-card-head">
-                    <div>
-                      <strong>{r.label || "Reminder"}</strong>
-                      <span>{r.item_name || "Item"}</span>
+                    <div className="app-card-title">
+                      <span className="app-card-glyph" aria-hidden="true">
+                        {info.urgent ? (
+                          <ShieldAlert size={18} strokeWidth={1.75} />
+                        ) : (
+                          <Bell size={18} strokeWidth={1.75} />
+                        )}
+                      </span>
+                      <div>
+                        <strong>{r.label || "Reminder"}</strong>
+                        <span>{r.item_name || "Item"}</span>
+                      </div>
                     </div>
                     {info.label ? (
                       <em className={`app-status${info.urgent ? " app-status--expiring" : ""}`}>{info.label}</em>
@@ -83,6 +94,7 @@ export function RemindersPage() {
                   <div className="app-card-actions">
                     {r.item_id ? (
                       <Link className="btn btn-ghost btn-sm" to={vaultItemPath(r.item_id)}>
+                        <ExternalLink size={14} strokeWidth={2} aria-hidden="true" />
                         Open item
                       </Link>
                     ) : null}
@@ -92,6 +104,7 @@ export function RemindersPage() {
                       disabled={busyId === r.reminder_id}
                       onClick={() => void act(r.reminder_id, "snooze")}
                     >
+                      <Clock3 size={14} strokeWidth={2} aria-hidden="true" />
                       Snooze 7d
                     </button>
                     <button
@@ -100,6 +113,7 @@ export function RemindersPage() {
                       disabled={busyId === r.reminder_id}
                       onClick={() => void act(r.reminder_id, "done")}
                     >
+                      <Check size={14} strokeWidth={2} aria-hidden="true" />
                       Mark done
                     </button>
                   </div>

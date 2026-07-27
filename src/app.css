@@ -961,7 +961,10 @@
 }
 
 .dash-content {
-  --dash-type: 14px; /* match .dash-link — vault copy must not exceed nav size */
+  --dash-type: 14px;
+  --dash-title: 16px;
+  --dash-kpi: clamp(1.5rem, 2.4vw, 1.85rem);
+  --dash-kpi-label: 12px;
   flex: 1;
   padding: 8px 0 40px;
   font-size: var(--dash-type);
@@ -972,7 +975,7 @@
 }
 
 .dash-content .app-page-head {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .dash-content .app-page-head--row {
@@ -984,23 +987,190 @@
 
 .dash-content .app-page-head h1 {
   margin: 0;
-  font-size: var(--dash-type);
+  font-size: var(--dash-title);
   font-weight: var(--fw);
   color: var(--forest);
+  letter-spacing: -0.02em;
 }
 
-.dash-content :is(h1, h2, h3, h4, p, li, span, a, label, strong, small, td, th, button, input, select, textarea),
+/* Body/UI type stays at nav size; KPIs and page titles are intentionally larger */
+.dash-content :is(p, li, span, a, label, small, td, th, button, input, select, textarea),
 .dash-content .lead,
 .dash-content .page-eyebrow,
-.dash-content .app-page-head h1,
-.dash-content .app-items-head h2,
-.dash-content .app-stats strong,
-.dash-content .app-stats span,
 .dash-content .app-items-head span,
 .dash-content .app-muted,
 .dash-content .app-banner,
 .dash-content .auth-error {
   font-size: var(--dash-type);
+}
+
+.dash-content .app-items-head h2,
+.dash-content .app-panel h2 {
+  font-size: var(--dash-type);
+}
+
+.dash-content .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dash-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dash-link-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  text-align: center;
+  flex: 0 0 auto;
+  opacity: 0.95;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-content .app-stats,
+.dash-content .app-stats--hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.dash-content .app-stats--hero .app-kpi--emphasis {
+  grid-column: span 2;
+}
+
+@media (max-width: 700px) {
+  .dash-content .app-stats--hero .app-kpi--emphasis {
+    grid-column: auto;
+  }
+}
+
+.dash-content .app-kpi {
+  background: var(--white);
+  border: 1px solid rgba(15, 93, 80, 0.1);
+  border-radius: 14px;
+  padding: 16px 16px 14px;
+  display: grid;
+  gap: 10px;
+  min-height: 96px;
+}
+
+.dash-content .app-kpi--emphasis {
+  border-color: rgba(15, 93, 80, 0.22);
+  background: linear-gradient(180deg, #ffffff 0%, #f3faf7 100%);
+}
+
+.dash-content .app-kpi--alert {
+  border-color: rgba(154, 107, 18, 0.35);
+  background: linear-gradient(180deg, #fffdf8 0%, #fff6e8 100%);
+}
+
+.dash-content .app-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dash-content .app-kpi-label {
+  font-size: var(--dash-kpi-label) !important;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.dash-content .app-kpi-icon {
+  color: var(--forest);
+  opacity: 0.7;
+  display: inline-flex;
+}
+
+.dash-content .app-kpi--alert .app-kpi-icon {
+  color: #9a6b12;
+}
+
+.dash-content .app-kpi-value {
+  display: block;
+  font-size: var(--dash-kpi) !important;
+  line-height: 1.15;
+  color: var(--forest);
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.dash-content .app-home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.dash-content .app-panel--priority {
+  border-color: rgba(154, 107, 18, 0.28);
+  box-shadow: 0 1px 0 rgba(154, 107, 18, 0.08);
+}
+
+.dash-content .app-panel--secondary {
+  opacity: 0.96;
+}
+
+.dash-content .app-items-head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--forest);
+}
+
+.dash-content .app-card-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dash-content .app-card-glyph {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--forest-50, #eef7f4);
+  color: var(--forest);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.dash-content .app-card--urgent {
+  border-color: rgba(154, 107, 18, 0.35);
+}
+
+.dash-content .app-empty {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}
+
+.dash-content .app-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dash-content .app-detail h1 {
+  font-size: var(--dash-title);
+  margin: 0 0 6px;
+}
+
+.dash-content .app-item-list strong {
+  font-size: var(--dash-type);
+  color: var(--ink);
 }
 
 .dash-backdrop {

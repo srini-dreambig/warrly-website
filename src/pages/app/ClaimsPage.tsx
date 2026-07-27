@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { FilePlus2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { createClaim, fetchClaims, fetchItems, type Claim, type VaultItem } from "../../lib/api";
 import { vaultClaimPath } from "../../lib/hosts";
@@ -82,6 +83,7 @@ export function ClaimsPage() {
             />
           </label>
           <button type="submit" className="btn btn-amber" disabled={creating || !items.length}>
+            <FilePlus2 size={16} strokeWidth={2} aria-hidden="true" />
             {creating ? "Creating…" : "Draft claim"}
           </button>
         </form>

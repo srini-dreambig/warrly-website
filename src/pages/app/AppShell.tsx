@@ -1,5 +1,19 @@
 import { useEffect, useState } from "react";
+import {
+  Bell,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  FileText,
+  Home,
+  LogOut,
+  Menu,
+  Package,
+  Users,
+  UserRound,
+} from "lucide-react";
 import { Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
+import type { LucideIcon } from "lucide-react";
 import { BrandLockup } from "../../components/BrandLockup";
 import { config } from "../../config";
 import { useAuth } from "../../lib/auth";
@@ -71,15 +85,15 @@ export function RedirectWwwAuthToSubdomain() {
   );
 }
 
-const NAV = [
-  { to: vaultHomePath, end: true, label: "Home", icon: "⌂" },
-  { to: vaultInventoryPath, end: false, label: "Inventory", icon: "▦" },
-  { to: vaultRemindersPath, end: false, label: "Reminders", icon: "◔" },
-  { to: vaultClaimsPath, end: false, label: "Claims", icon: "▤" },
-  { to: vaultHouseholdPath, end: false, label: "Household", icon: "⚬" },
-  { to: vaultReportsPath, end: false, label: "Reports", icon: "▥" },
-  { to: vaultAccountPath, end: false, label: "Account", icon: "☺" },
-] as const;
+const NAV: { to: () => string; end: boolean; label: string; icon: LucideIcon }[] = [
+  { to: vaultHomePath, end: true, label: "Home", icon: Home },
+  { to: vaultInventoryPath, end: false, label: "Inventory", icon: Package },
+  { to: vaultRemindersPath, end: false, label: "Reminders", icon: Bell },
+  { to: vaultClaimsPath, end: false, label: "Claims", icon: ClipboardList },
+  { to: vaultHouseholdPath, end: false, label: "Household", icon: Users },
+  { to: vaultReportsPath, end: false, label: "Reports", icon: FileText },
+  { to: vaultAccountPath, end: false, label: "Account", icon: UserRound },
+];
 
 export function AppShell() {
   const { user, logout } = useAuth();
@@ -122,24 +136,28 @@ export function AppShell() {
             aria-label={collapseLabel}
             onClick={() => setCollapsed((v) => !v)}
           >
-            <span aria-hidden="true">{collapsed ? "»" : "«"}</span>
+            {collapsed ? <ChevronRight size={16} strokeWidth={2} /> : <ChevronLeft size={16} strokeWidth={2} />}
           </button>
         </div>
 
         <nav className="dash-nav">
-          {NAV.map((item) => (
-            <NavLink
-              key={item.label}
-              to={item.to()}
-              end={item.end}
-              className={({ isActive }) => (isActive ? "dash-link is-active" : "dash-link")}
-            >
-              <span className="dash-link-icon" aria-hidden="true">
-                {item.icon}
-              </span>
-              <span className="dash-link-label">{item.label}</span>
-            </NavLink>
-          ))}
+          {NAV.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.label}
+                to={item.to()}
+                end={item.end}
+                className={({ isActive }) => (isActive ? "dash-link is-active" : "dash-link")}
+                title={item.label}
+              >
+                <span className="dash-link-icon" aria-hidden="true">
+                  <Icon size={18} strokeWidth={1.75} />
+                </span>
+                <span className="dash-link-label">{item.label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
 
         <div className="dash-sidebar-foot">
@@ -148,7 +166,8 @@ export function AppShell() {
             <span className="dash-user-email">{user?.email}</span>
           </div>
           <button type="button" className="btn btn-forest btn-sm dash-logout" onClick={() => void onLogout()}>
-            Log out
+            <LogOut size={14} strokeWidth={2} aria-hidden="true" />
+            <span>Log out</span>
           </button>
         </div>
       </aside>
@@ -161,7 +180,8 @@ export function AppShell() {
             aria-label={collapseLabel}
             onClick={() => setCollapsed((v) => !v)}
           >
-            Menu
+            <Menu size={16} strokeWidth={2} aria-hidden="true" />
+            <span>Menu</span>
           </button>
         </header>
         <div className="dash-content">

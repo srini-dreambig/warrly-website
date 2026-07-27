@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { AlertTriangle, Package, QrCode, ShieldCheck, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ActionQrModal } from "../../components/ActionQrModal";
+import { KpiCard } from "../../components/KpiCard";
 import { fetchItems, fetchStats, type VaultItem, type VaultStats } from "../../lib/api";
 import { vaultItemPath } from "../../lib/hosts";
 
@@ -53,6 +55,7 @@ export function VaultHomePage() {
         <div className="app-page-head app-page-head--row">
           <h1>Inventory</h1>
           <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>
+            <QrCode size={16} strokeWidth={2} aria-hidden="true" />
             Add item via QR
           </button>
         </div>
@@ -75,23 +78,21 @@ export function VaultHomePage() {
         {loading ? <p className="app-muted">Loading…</p> : null}
 
         {stats ? (
-          <div className="app-stats">
-            <article>
-              <strong>{stats.total_items}</strong>
-              <span>Items</span>
-            </article>
-            <article>
-              <strong>{money(stats.protected_value, stats.currency)}</strong>
-              <span>Protected value</span>
-            </article>
-            <article>
-              <strong>{stats.active_coverage}</strong>
-              <span>Active cover</span>
-            </article>
-            <article>
-              <strong>{stats.needs_attention}</strong>
-              <span>Needs attention</span>
-            </article>
+          <div className="app-stats app-stats--hero">
+            <KpiCard
+              label="Protected value"
+              value={money(stats.protected_value, stats.currency)}
+              icon={IndianRupee}
+              tone="emphasis"
+            />
+            <KpiCard label="Items" value={stats.total_items} icon={Package} />
+            <KpiCard label="Active cover" value={stats.active_coverage} icon={ShieldCheck} />
+            <KpiCard
+              label="Needs attention"
+              value={stats.needs_attention}
+              icon={AlertTriangle}
+              tone={stats.needs_attention > 0 ? "alert" : "default"}
+            />
           </div>
         ) : null}
 
@@ -102,9 +103,10 @@ export function VaultHomePage() {
           </div>
           {!loading && items.length === 0 ? (
             <div className="app-empty">
-              <p>No items yet. Use Add item via QR to capture on your phone.</p>
+              <p>No items yet.</p>
               <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>
-                Generate add-item QR
+                <QrCode size={16} strokeWidth={2} aria-hidden="true" />
+                Add item via QR
               </button>
             </div>
           ) : (
@@ -114,9 +116,7 @@ export function VaultHomePage() {
                   <Link to={vaultItemPath(item.item_id)}>
                     <div>
                       <strong>{item.name || "Untitled item"}</strong>
-                      <span>
-                        {[item.brand, item.category].filter(Boolean).join(" · ") || "No brand"}
-                      </span>
+                      <span>{[item.brand, item.category].filter(Boolean).join(" · ") || "No brand"}</span>
                     </div>
                     <em className={`app-status app-status--${item.status || "unknown"}`}>
                       {statusLabel(item.status)}
