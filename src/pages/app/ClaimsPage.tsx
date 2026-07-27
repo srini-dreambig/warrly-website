@@ -140,18 +140,19 @@ export function ClaimsPage() {
               <div className="app-form-actions">
                 <button
                   type="button"
-                  className="btn btn-forest"
-                  disabled={assisting || !items.length || issue.trim().length < 3}
+                  className="btn btn-forest app-ai-assist-btn"
+                  disabled={assisting || !items.length}
                   onClick={() => void onAssist()}
                 >
                   <Sparkles size={16} strokeWidth={2} aria-hidden="true" />
-                  {assisting ? "Drafting…" : "AI assist"}
+                  {assisting ? "AI drafting…" : "AI Assistant"}
                 </button>
                 <button type="submit" className="btn btn-amber" disabled={creating || !items.length}>
                   <FilePlus2 size={16} strokeWidth={2} aria-hidden="true" />
                   {creating ? "Creating…" : "Save draft"}
                 </button>
               </div>
+              <p className="app-muted">Type a short issue, then use AI Assistant to polish the claim letter.</p>
               {letterPreview ? (
                 <div className="app-ai-preview">
                   <div className="app-items-head">

@@ -1022,6 +1022,10 @@
   gap: 8px;
 }
 
+.dash-content .app-ai-assist-btn {
+  min-width: 9.5rem;
+}
+
 .dash-content .app-ai-preview {
   margin-top: 4px;
   display: grid;
