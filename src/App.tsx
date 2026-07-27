@@ -15,6 +15,7 @@ import { PrivacyPage } from "./pages/PrivacyPage";
 import { ReferralPage } from "./pages/ReferralPage";
 import { TermsPage } from "./pages/TermsPage";
 import { WaitlistPage } from "./pages/WaitlistPage";
+import { ActionLandingPage } from "./pages/ActionLandingPage";
 import { AppShell, RequireAuth } from "./pages/app/AppShell";
 import { ForgotPasswordPage } from "./pages/app/ForgotPasswordPage";
 import { ItemDetailPage } from "./pages/app/ItemDetailPage";
@@ -39,6 +40,7 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/a/:token" element={<ActionLandingPage />} />
       <Route element={<RequireAuth />}>
         <Route element={<AppShell />}>
           <Route path="/app" element={<VaultHomePage />} />

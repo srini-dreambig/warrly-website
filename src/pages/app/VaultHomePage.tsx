@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ActionQrModal } from "../../components/ActionQrModal";
 import { fetchItems, fetchStats, type VaultItem, type VaultStats } from "../../lib/api";
 
 function money(value: number, currency = "INR") {
@@ -24,40 +25,49 @@ export function VaultHomePage() {
   const [items, setItems] = useState<VaultItem[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [banner, setBanner] = useState("");
+
+  const reload = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const [s, list] = await Promise.all([fetchStats(), fetchItems()]);
+      setStats(s);
+      setItems(Array.isArray(list) ? list : []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not load vault.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const [s, list] = await Promise.all([fetchStats(), fetchItems()]);
-        if (cancelled) return;
-        setStats(s);
-        setItems(Array.isArray(list) ? list : []);
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Could not load vault.");
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    void reload();
+  }, [reload]);
 
   return (
     <main className="app-main">
       <div className="wrap">
-        <div className="app-page-head">
+        <div className="app-page-head app-page-head--row">
           <div>
             <p className="page-eyebrow">Web vault</p>
             <h1>Your inventory</h1>
-            <p className="lead">Same Neon-backed API as the mobile app — browse coverage while stores catch up.</p>
+            <p className="lead">
+              Browse coverage here. Camera actions use a temporary QR — finish on your phone, then data syncs to this
+              vault.
+            </p>
           </div>
+          <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>
+            Add item via QR
+          </button>
         </div>
+
+        {banner ? (
+          <p className="app-banner" role="status">
+            {banner}
+          </p>
+        ) : null}
 
         {error ? (
           <p className="auth-error" role="alert">
@@ -95,10 +105,10 @@ export function VaultHomePage() {
           </div>
           {!loading && items.length === 0 ? (
             <div className="app-empty">
-              <p>No items yet. Add purchases from the mobile app when it launches — or keep this account ready.</p>
-              <Link className="btn btn-amber" to="/waitlist">
-                Stay on the waitlist
-              </Link>
+              <p>No items yet. Generate a QR, scan with your phone, and add the first receipt in Warrly.</p>
+              <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>
+                Generate add-item QR
+              </button>
             </div>
           ) : (
             <ul className="app-item-list">
@@ -121,6 +131,19 @@ export function VaultHomePage() {
           )}
         </section>
       </div>
+
+      <ActionQrModal
+        open={qrOpen}
+        action="add_item"
+        onClose={() => setQrOpen(false)}
+        onCompleted={async () => {
+          setBanner("Item saved from phone — refreshing vault…");
+          setQrOpen(false);
+          await reload();
+          setBanner("Vault updated from your phone.");
+          window.setTimeout(() => setBanner(""), 4000);
+        }}
+      />
     </main>
   );
 }

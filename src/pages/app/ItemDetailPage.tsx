@@ -1,32 +1,35 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ActionQrModal } from "../../components/ActionQrModal";
 import { fetchItem } from "../../lib/api";
+
+type HandoffAction = "add_document" | "capture_serial" | "start_claim";
 
 export function ItemDetailPage() {
   const { itemId = "" } = useParams();
   const [item, setItem] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [handoff, setHandoff] = useState<HandoffAction | null>(null);
+  const [banner, setBanner] = useState("");
+
+  const reload = useCallback(async () => {
+    if (!itemId) return;
+    setLoading(true);
+    setError("");
+    try {
+      const data = await fetchItem(itemId);
+      setItem(data as Record<string, unknown>);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not load item.");
+    } finally {
+      setLoading(false);
+    }
+  }, [itemId]);
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      if (!itemId) return;
-      setLoading(true);
-      setError("");
-      try {
-        const data = await fetchItem(itemId);
-        if (!cancelled) setItem(data as Record<string, unknown>);
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Could not load item.");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [itemId]);
+    void reload();
+  }, [reload]);
 
   const docs = Array.isArray(item?.documents) ? (item?.documents as Record<string, unknown>[]) : [];
   const coverages = Array.isArray(item?.coverages) ? (item?.coverages as Record<string, unknown>[]) : [];
@@ -37,6 +40,11 @@ export function ItemDetailPage() {
         <Link className="app-back" to="/app">
           ← Back to vault
         </Link>
+        {banner ? (
+          <p className="app-banner" role="status">
+            {banner}
+          </p>
+        ) : null}
         {loading ? <p className="app-muted">Loading…</p> : null}
         {error ? (
           <p className="auth-error" role="alert">
@@ -48,8 +56,21 @@ export function ItemDetailPage() {
             <p className="page-eyebrow">{String(item.category || "Item")}</p>
             <h1>{String(item.name || "Untitled item")}</h1>
             <p className="lead">
-              {[item.brand, item.model, item.serial].filter(Boolean).map(String).join(" · ") || "No identity fields yet"}
+              {[item.brand, item.model, item.serial].filter(Boolean).map(String).join(" · ") ||
+                "No identity fields yet"}
             </p>
+
+            <div className="app-handoff-row">
+              <button type="button" className="btn btn-forest btn-sm" onClick={() => setHandoff("add_document")}>
+                Add document via QR
+              </button>
+              <button type="button" className="btn btn-forest btn-sm" onClick={() => setHandoff("capture_serial")}>
+                Capture serial via QR
+              </button>
+              <button type="button" className="btn btn-amber btn-sm" onClick={() => setHandoff("start_claim")}>
+                Start claim via QR
+              </button>
+            </div>
 
             <div className="app-detail-grid">
               <section>
@@ -72,7 +93,7 @@ export function ItemDetailPage() {
               <section>
                 <h2>Documents</h2>
                 {docs.length === 0 ? (
-                  <p className="app-muted">No documents attached yet.</p>
+                  <p className="app-muted">No documents attached yet. Use QR to capture on phone.</p>
                 ) : (
                   <ul className="app-simple-list">
                     {docs.map((d, i) => (
@@ -88,6 +109,22 @@ export function ItemDetailPage() {
           </>
         ) : null}
       </div>
+
+      {handoff ? (
+        <ActionQrModal
+          open
+          action={handoff}
+          itemId={itemId}
+          onClose={() => setHandoff(null)}
+          onCompleted={async () => {
+            setBanner("Phone action completed — refreshing…");
+            setHandoff(null);
+            await reload();
+            setBanner("Item updated from your phone.");
+            window.setTimeout(() => setBanner(""), 4000);
+          }}
+        />
+      ) : null}
     </main>
   );
 }

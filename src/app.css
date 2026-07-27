@@ -552,3 +552,147 @@
     grid-template-columns: 1fr;
   }
 }
+
+.app-page-head--row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.app-banner {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--forest-50);
+  color: var(--forest-dark);
+  font-size: 14px;
+}
+
+.app-handoff-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 28px;
+}
+
+.action-qr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(8, 64, 58, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.action-qr-modal {
+  position: relative;
+  width: min(440px, 100%);
+  background: var(--white);
+  border-radius: 20px;
+  padding: 28px 24px 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+}
+
+.action-qr-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  border: 0;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.action-qr-modal h2 {
+  margin: 0 0 8px;
+  color: var(--forest);
+  font-size: 1.45rem;
+}
+
+.action-qr-lede {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.action-qr-frame {
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 16px;
+}
+
+.action-qr-skeleton {
+  width: 220px;
+  height: 220px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eee, #f7f7f7, #eee);
+  background-size: 200% 100%;
+  animation: auth-glow 1.2s linear infinite;
+}
+
+.action-qr-status {
+  text-align: center;
+  font-size: 14px;
+  font-weight: var(--fw);
+  color: var(--forest);
+  margin: 0 0 10px;
+}
+
+.action-qr-status--completed {
+  color: #0f766e;
+}
+
+.action-qr-status--expired,
+.action-qr-status--cancelled {
+  color: #991b1b;
+}
+
+.action-qr-link {
+  margin: 0 0 16px;
+  font-size: 12px;
+  color: var(--muted);
+  word-break: break-all;
+  text-align: center;
+}
+
+.action-qr-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.action-landing {
+  min-height: 100vh;
+  padding: 28px 20px 48px;
+  background: var(--illu-welcome-account);
+}
+
+.action-landing .brand-lockup {
+  margin-bottom: 28px;
+}
+
+.action-landing-card {
+  width: min(480px, 100%);
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 28px 24px;
+  border: 1px solid rgba(15, 93, 80, 0.12);
+}
+
+.action-landing-card h1 {
+  margin: 0 0 10px;
+  color: var(--forest);
+}
+
+.action-landing-card .btn {
+  margin-top: 8px;
+}

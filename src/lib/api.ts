@@ -210,3 +210,49 @@ export async function fetchItems() {
 export async function fetchItem(itemId: string) {
   return apiFetch<VaultItem & Record<string, unknown>>(`/api/items/${encodeURIComponent(itemId)}`);
 }
+
+export type ActionSession = {
+  session_id: string;
+  token?: string;
+  action: string;
+  action_title: string;
+  status: string;
+  item_id?: string | null;
+  deep_link: string;
+  web_url: string;
+  expires_at?: string | null;
+  result?: Record<string, unknown>;
+};
+
+export async function createActionSession(body: {
+  action: "add_item" | "add_document" | "capture_serial" | "start_claim";
+  item_id?: string;
+  note?: string;
+}) {
+  return apiFetch<ActionSession>("/api/action-sessions", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function getActionLink(token: string) {
+  const res = await fetch(`${apiBase()}/api/action-links/${encodeURIComponent(token)}`, {
+    headers: { Accept: "application/json" },
+  });
+  const data = await parseJson(res);
+  if (!res.ok) {
+    throw new Error(formatApiError(data, `Request failed (${res.status})`));
+  }
+  return data as ActionSession;
+}
+
+export async function cancelActionSession(sessionId: string) {
+  return apiFetch<ActionSession>(`/api/action-sessions/${encodeURIComponent(sessionId)}/cancel`, {
+    method: "POST",
+    body: "{}",
+  });
+}
+
+export async function deleteItem(itemId: string) {
+  return apiFetch<{ ok: boolean }>(`/api/items/${encodeURIComponent(itemId)}`, { method: "DELETE" });
+}
