@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { FilePlus2 } from "lucide-react";
+import { FilePlus2, Sparkles } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { createClaim, fetchClaims, fetchItems, type Claim, type VaultItem } from "../../lib/api";
+import { assistClaimDraft, createClaim, fetchClaims, fetchItems, type Claim, type VaultItem } from "../../lib/api";
 import { vaultClaimPath } from "../../lib/hosts";
 
 export function ClaimsPage() {
@@ -12,7 +12,10 @@ export function ClaimsPage() {
   const [loading, setLoading] = useState(true);
   const [itemId, setItemId] = useState("");
   const [issue, setIssue] = useState("");
+  const [letterPreview, setLetterPreview] = useState("");
+  const [aiModel, setAiModel] = useState("");
   const [creating, setCreating] = useState(false);
+  const [assisting, setAssisting] = useState(false);
 
   const reload = useCallback(async () => {
     setLoading(true);
@@ -33,14 +36,34 @@ export function ClaimsPage() {
     void reload();
   }, [reload]);
 
+  async function onAssist() {
+    if (!itemId || issue.trim().length < 3) {
+      setError("Pick an item and describe what happened (a few words is enough).");
+      return;
+    }
+    setAssisting(true);
+    setError("");
+    try {
+      const result = await assistClaimDraft({ item_id: itemId, notes: issue.trim() });
+      if (result.issue) setIssue(result.issue);
+      setLetterPreview(result.letter || "");
+      setAiModel(result.model || "");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "AI assistant could not draft this claim.");
+    } finally {
+      setAssisting(false);
+    }
+  }
+
   async function onCreate(e: React.FormEvent) {
     e.preventDefault();
     if (!itemId || !issue.trim()) return;
     setCreating(true);
     setError("");
     try {
-      const claim = await createClaim({ item_id: itemId, issue: issue.trim() });
+      const claim = await createClaim({ item_id: itemId, issue: issue.trim(), use_ai: true });
       setIssue("");
+      setLetterPreview("");
       navigate(vaultClaimPath(claim.claim_id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not start claim.");
@@ -102,19 +125,42 @@ export function ClaimsPage() {
                 </select>
               </label>
               <label>
-                Issue
+                What happened?
                 <textarea
                   rows={4}
                   value={issue}
-                  onChange={(e) => setIssue(e.target.value)}
-                  placeholder="What happened?"
+                  onChange={(e) => {
+                    setIssue(e.target.value);
+                    setLetterPreview("");
+                  }}
+                  placeholder="e.g. screen flickering after 2 months"
                   required
                 />
               </label>
-              <button type="submit" className="btn btn-amber" disabled={creating || !items.length}>
-                <FilePlus2 size={16} strokeWidth={2} aria-hidden="true" />
-                {creating ? "Creating…" : "Draft claim"}
-              </button>
+              <div className="app-form-actions">
+                <button
+                  type="button"
+                  className="btn btn-forest"
+                  disabled={assisting || !items.length || issue.trim().length < 3}
+                  onClick={() => void onAssist()}
+                >
+                  <Sparkles size={16} strokeWidth={2} aria-hidden="true" />
+                  {assisting ? "Drafting…" : "AI assist"}
+                </button>
+                <button type="submit" className="btn btn-amber" disabled={creating || !items.length}>
+                  <FilePlus2 size={16} strokeWidth={2} aria-hidden="true" />
+                  {creating ? "Creating…" : "Save draft"}
+                </button>
+              </div>
+              {letterPreview ? (
+                <div className="app-ai-preview">
+                  <div className="app-items-head">
+                    <h2>Letter preview</h2>
+                    {aiModel ? <span>{aiModel.replace(":free", "")}</span> : null}
+                  </div>
+                  <pre className="app-pre">{letterPreview}</pre>
+                </div>
+              ) : null}
             </form>
           </aside>
         </div>

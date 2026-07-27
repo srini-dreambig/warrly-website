@@ -351,10 +351,22 @@ export async function fetchClaim(claimId: string) {
   return apiFetch<Claim>(`/api/claims/${encodeURIComponent(claimId)}`);
 }
 
-export async function createClaim(body: { item_id: string; issue: string; coverage_id?: string }) {
-  return apiFetch<Claim>("/api/claims", {
+export async function assistClaimDraft(body: { item_id: string; notes: string; coverage_id?: string }) {
+  return apiFetch<{ issue: string; letter: string; model?: string; ai?: boolean }>("/api/claims/assist", {
     method: "POST",
     body: JSON.stringify(body),
+  });
+}
+
+export async function createClaim(body: {
+  item_id: string;
+  issue: string;
+  coverage_id?: string;
+  use_ai?: boolean;
+}) {
+  return apiFetch<Claim>("/api/claims", {
+    method: "POST",
+    body: JSON.stringify({ use_ai: true, ...body }),
   });
 }
 
