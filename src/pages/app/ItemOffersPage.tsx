@@ -65,7 +65,7 @@ export function ItemOffersPage() {
         <title>Offers · {itemName || "Item"} · Warrly</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      <div className="wrap">
+      <div className="wrap wrap--vault">
         <Link className="app-back" to={vaultItemPath(itemId)}>
           ← Back to item
         </Link>

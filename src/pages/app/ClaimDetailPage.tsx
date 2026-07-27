@@ -76,7 +76,7 @@ export function ClaimDetailPage() {
         <title>{claim ? `${claim.item_name || "Claim"} · Warrly` : "Claim · Warrly"}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      <div className="wrap app-detail">
+      <div className="wrap wrap--vault app-detail">
         <Link className="app-back" to={vaultClaimsPath()}>
           ← Back to claims
         </Link>
@@ -122,12 +122,12 @@ export function ClaimDetailPage() {
 
             <section className="app-panel" style={{ marginTop: 20 }}>
               <h2>Status</h2>
-              <div className="app-handoff-row">
+              <div className="app-status-rail">
                 {STATUSES.map((s) => (
                   <button
                     key={s.id}
                     type="button"
-                    className={`btn btn-sm ${claim.status === s.id ? "btn-amber" : "btn-forest"}`}
+                    className={`app-status-chip${claim.status === s.id ? " is-active" : ""}`}
                     disabled={busy || claim.status === s.id}
                     onClick={() => void setStatus(s.id)}
                   >

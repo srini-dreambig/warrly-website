@@ -81,7 +81,7 @@ export function AccountPage() {
 
   return (
     <main className="app-main">
-      <div className="wrap">
+      <div className="wrap wrap--vault-narrow">
         <div className="app-page-head">
           <h1>Account</h1>
         </div>

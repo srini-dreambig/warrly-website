@@ -54,7 +54,7 @@ export function RemindersPage() {
 
   return (
     <main className="app-main">
-      <div className="wrap">
+      <div className="wrap wrap--vault">
         <div className="app-page-head">
           <h1>Reminders</h1>
         </div>

@@ -51,7 +51,7 @@ export function VaultHomePage() {
 
   return (
     <main className="app-main">
-      <div className="wrap">
+      <div className="wrap wrap--vault">
         <div className="app-page-head app-page-head--row">
           <h1>Inventory</h1>
           <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>

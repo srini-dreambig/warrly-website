@@ -59,7 +59,7 @@ export function ItemDetailPage() {
         <title>{item ? `${String(item.name || "Item")} · Warrly` : "Item · Warrly"}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      <div className="wrap app-detail">
+      <div className="wrap wrap--vault app-detail">
         <Link className="app-back" to={vaultInventoryPath()}>
           <ArrowLeft size={14} strokeWidth={2} aria-hidden="true" />
           Inventory

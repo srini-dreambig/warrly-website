@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Copy, UserPlus, Users } from "lucide-react";
 import {
   createHouseholdInvite,
   fetchHousehold,
@@ -103,7 +104,7 @@ export function HouseholdPage() {
 
   return (
     <main className="app-main">
-      <div className="wrap">
+      <div className="wrap wrap--vault">
         <div className="app-page-head">
           <h1>Household</h1>
         </div>
@@ -112,83 +113,100 @@ export function HouseholdPage() {
         {loading ? <p className="app-muted">Loading…</p> : null}
 
         {hh ? (
-          <>
-            <form className="app-panel app-form-panel" onSubmit={(e) => void onRename(e)}>
-              <h2>Household name</h2>
-              <label>
-                Name
-                <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} />
-              </label>
-              <button type="submit" className="btn btn-forest" disabled={busy}>
-                Save name
-              </button>
-            </form>
+          <div className="app-split">
+            <section className="app-split-main">
+              <form className="app-panel app-form-panel" onSubmit={(e) => void onRename(e)}>
+                <h2>Name</h2>
+                <label>
+                  Household
+                  <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} />
+                </label>
+                <button type="submit" className="btn btn-forest" disabled={busy}>
+                  Save
+                </button>
+              </form>
 
-            <section className="app-panel" style={{ marginTop: 16 }}>
-              <h2>Members</h2>
-              <ul className="app-simple-list">
-                {(hh.members || []).map((m) => (
-                  <li key={m.user_id}>
-                    <div>
-                      <strong>
-                        {m.name || m.email || "Member"} {m.role === "owner" ? "(owner)" : ""}
-                      </strong>
-                      <span>{m.email}</span>
-                    </div>
-                    {isOwner && m.user_id !== user?.user_id ? (
+              <section className="app-panel" style={{ marginTop: 14 }}>
+                <div className="app-items-head">
+                  <h2>
+                    <Users size={16} strokeWidth={1.75} aria-hidden="true" />
+                    Members
+                  </h2>
+                  <span>{(hh.members || []).length}</span>
+                </div>
+                <ul className="app-simple-list">
+                  {(hh.members || []).map((m) => (
+                    <li key={m.user_id}>
+                      <div>
+                        <strong>
+                          {m.name || m.email || "Member"} {m.role === "owner" ? "(owner)" : ""}
+                        </strong>
+                        <span>{m.email}</span>
+                      </div>
+                      {isOwner && m.user_id !== user?.user_id ? (
+                        <button
+                          type="button"
+                          className="btn btn-forest btn-sm"
+                          disabled={busy}
+                          onClick={() => void onRemove(m.user_id, m.name || m.email || "member")}
+                        >
+                          Remove
+                        </button>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </section>
+
+            <aside className="app-split-side">
+              {isOwner ? (
+                <section className="app-panel app-form-panel">
+                  <h2>
+                    <UserPlus size={16} strokeWidth={1.75} aria-hidden="true" />
+                    Invite
+                  </h2>
+                  {inviteCode ? (
+                    <div className="app-invite-row">
+                      <strong className="app-invite-code">{inviteCode}</strong>
                       <button
                         type="button"
                         className="btn btn-forest btn-sm"
-                        disabled={busy}
-                        onClick={() => void onRemove(m.user_id, m.name || m.email || "member")}
+                        onClick={() => void navigator.clipboard.writeText(inviteCode)}
                       >
-                        Remove
+                        <Copy size={14} strokeWidth={2} aria-hidden="true" />
+                        Copy
                       </button>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </section>
+                    </div>
+                  ) : null}
+                  <button type="button" className="btn btn-amber" disabled={busy} onClick={() => void onInvite()}>
+                    {inviteCode ? "Refresh code" : "Create invite code"}
+                  </button>
+                </section>
+              ) : null}
 
-            {isOwner ? (
-              <section className="app-panel" style={{ marginTop: 16 }}>
-                <h2>Invite</h2>
-                {inviteCode ? (
-                  <p>
-                    <strong className="app-invite-code">{inviteCode}</strong>
-                    <button
-                      type="button"
-                      className="btn btn-forest btn-sm"
-                      style={{ marginLeft: 8 }}
-                      onClick={() => void navigator.clipboard.writeText(inviteCode)}
-                    >
-                      Copy
-                    </button>
-                  </p>
-                ) : null}
-                <button type="button" className="btn btn-amber" disabled={busy} onClick={() => void onInvite()}>
-                  {inviteCode ? "Refresh invite code" : "Create invite code"}
+              <form
+                className="app-panel app-form-panel"
+                style={{ marginTop: isOwner ? 14 : 0 }}
+                onSubmit={(e) => void onJoin(e)}
+              >
+                <h2>Join</h2>
+                <label>
+                  Invite code
+                  <input
+                    value={joinCode}
+                    onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                    placeholder="ABC234"
+                    maxLength={12}
+                  />
+                </label>
+                <button type="submit" className="btn btn-forest" disabled={busy || joinCode.trim().length < 4}>
+                  Join household
                 </button>
-              </section>
-            ) : null}
-          </>
+              </form>
+            </aside>
+          </div>
         ) : null}
-
-        <form className="app-panel app-form-panel" style={{ marginTop: 16 }} onSubmit={(e) => void onJoin(e)}>
-          <h2>Join another household</h2>
-          <label>
-            Invite code
-            <input
-              value={joinCode}
-              onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-              placeholder="ABC234"
-              maxLength={12}
-            />
-          </label>
-          <button type="submit" className="btn btn-forest" disabled={busy || joinCode.trim().length < 4}>
-            Join
-          </button>
-        </form>
       </div>
     </main>
   );

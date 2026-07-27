@@ -71,7 +71,7 @@ export function HomeDashboardPage() {
 
   return (
     <main className="app-main">
-      <div className="wrap">
+      <div className="wrap wrap--vault">
         <div className="app-page-head">
           <h1>Home</h1>
         </div>
