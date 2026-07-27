@@ -95,7 +95,7 @@ export function WaitlistPage() {
       }
       // Browser-side FormSubmit (Render server IPs are often 403'd by FormSubmit)
       try {
-        await fetch("https://formsubmit.co/ajax/info@dataplexor.com", {
+        await fetch(`https://formsubmit.co/ajax/${config.supportEmail}`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify({
