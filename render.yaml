@@ -1,0 +1,20 @@
+# Render Blueprint — Warrly marketing + web vault (SPA)
+services:
+  - type: web
+    name: warrly-webapp
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build && npm install serve
+    startCommand: npx serve -s dist -l $PORT
+    autoDeploy: true
+    branch: main
+    envVars:
+      - key: VITE_API_URL
+        value: https://warrly-api.onrender.com
+      - key: VITE_WEBAPP_ENABLED
+        value: "true"
+      - key: VITE_SITE_URL
+        value: https://warrly-webapp.onrender.com
+      - key: NODE_VERSION
+        value: "22.14.0"
