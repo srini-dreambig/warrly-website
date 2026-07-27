@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { BrandLockup } from "../../components/BrandLockup";
 import { config } from "../../config";
 import { useAuth } from "../../lib/auth";
@@ -93,7 +93,6 @@ export function AppShell() {
     <div className={`dash-shell${collapsed ? " dash-shell--collapsed" : ""}`}>
       <aside className="dash-sidebar" aria-label="Main navigation">
         <div className="dash-sidebar-top">
-          <BrandLockup to={home} className="dash-brand" />
           <button
             type="button"
             className="dash-collapse-btn"
@@ -105,19 +104,16 @@ export function AppShell() {
           </button>
         </div>
 
+        <BrandLockup to={home} className="dash-brand" />
+
         <nav className="dash-nav">
+          {/* Product destinations only — marketing stays on www */}
           <NavLink to={home} end className={({ isActive }) => (isActive ? "dash-link is-active" : "dash-link")}>
             <span className="dash-link-icon" aria-hidden="true">
               ▦
             </span>
             <span className="dash-link-label">Inventory</span>
           </NavLink>
-          <a className="dash-link" href={config.siteUrl} target="_blank" rel="noreferrer">
-            <span className="dash-link-icon" aria-hidden="true">
-              ⌂
-            </span>
-            <span className="dash-link-label">Marketing site</span>
-          </a>
         </nav>
 
         <div className="dash-sidebar-foot">
@@ -142,9 +138,6 @@ export function AppShell() {
             Menu
           </button>
           <p className="dash-topbar-title">Vault</p>
-          <Link className="dash-topbar-site" to={home}>
-            Warrly
-          </Link>
         </header>
         <div className="dash-content">
           <Outlet />

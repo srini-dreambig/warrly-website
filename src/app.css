@@ -811,14 +811,16 @@
 .dash-sidebar-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-height: 48px;
+  justify-content: center;
+  min-height: 40px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .dash-brand.brand-lockup {
   color: #f7faf8;
   min-width: 0;
+  padding: 4px 4px 0;
 }
 
 .dash-brand .brand-tagline {
@@ -830,6 +832,10 @@
   display: none;
 }
 
+.dash-shell--collapsed .dash-brand {
+  justify-content: center;
+}
+
 .dash-collapse-btn {
   border: 1px solid rgba(247, 250, 248, 0.22);
   background: rgba(255, 255, 255, 0.06);
@@ -839,6 +845,10 @@
   height: 36px;
   cursor: pointer;
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .dash-collapse-btn--mobile {
@@ -943,23 +953,39 @@
 .dash-topbar-title {
   margin: 0;
   font-weight: var(--fw);
+  font-size: 14px;
   color: var(--forest);
 }
 
-.dash-topbar-site {
-  margin-left: auto;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 13px;
-}
-
 .dash-content {
+  --dash-type: 14px; /* match .dash-link — vault copy must not exceed nav size */
   flex: 1;
   padding: 8px 0 40px;
+  font-size: var(--dash-type);
 }
 
 .dash-content .app-main {
   padding-top: 12px;
+}
+
+.dash-content :is(h1, h2, h3, h4, p, li, span, a, label, strong, small, td, th, button, input, select, textarea),
+.dash-content .lead,
+.dash-content .page-eyebrow,
+.dash-content .app-page-head h1,
+.dash-content .app-items-head h2,
+.dash-content .app-stats strong,
+.dash-content .app-stats span,
+.dash-content .app-items-head span,
+.dash-content .app-muted,
+.dash-content .app-banner,
+.dash-content .auth-error {
+  font-size: var(--dash-type);
+}
+
+.dash-content .page-eyebrow,
+.dash-content .app-user-email,
+.dash-content .app-muted {
+  opacity: 0.85;
 }
 
 .dash-backdrop {
