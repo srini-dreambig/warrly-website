@@ -254,7 +254,7 @@ export function HomePage() {
                   Web app
                 </a>
               ) : config.webAppEnabled ? (
-                <a className="btn btn-ghost-light" href={config.loginHref || config.webAppUrl}>
+                <a className="btn btn-ghost-light" href={config.webAppUrl}>
                   Log in to vault
                 </a>
               ) : (
