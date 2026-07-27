@@ -47,14 +47,17 @@ With `VITE_WEBAPP_ENABLED=true` (default):
 - **Log in** → `/login` (register at `/register`)
 - Authenticated inventory → `/app` (item detail `/app/items/:id`)
 - Calls `VITE_API_URL` (`https://api.warrly.app`) with Bearer tokens
+- **Add item / docs / serial / claim** → temporary QR (`ActionQrModal`) → phone opens `/a/{token}` → `warrly://action/{token}` → finish in app → web polls until `completed` and refreshes inventory
 
-**Required on the API host:** add every marketing origin to `CORS_ORIGINS`, e.g.
+**Required on the API host:**
 
 ```
 CORS_ORIGINS=https://www.warrly.in,https://warrly.in,https://warrly.vercel.app
+WEB_SITE_URL=https://www.warrly.in
+ACTION_SESSION_TTL_MINUTES=30
 ```
 
-Without those origins, the browser will block login/register/vault requests.
+Deploy backend with `action_sessions` routes (`POST /api/action-sessions`, `GET/POST /api/action-links/{token}/…`). Without that deploy, QR creation will 404.
 
 Set `VITE_WEBAPP_ENABLED=false` to send **Log in** to `/waitlist` instead.
 
