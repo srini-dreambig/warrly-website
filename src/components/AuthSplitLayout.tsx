@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { BrandLockup } from "./BrandLockup";
 
@@ -20,6 +20,19 @@ export function AuthSplitLayout({
   canvasColor = "var(--illu-welcome-account)",
   children,
 }: Props) {
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+    };
+  }, []);
+
   return (
     <main className="auth-split" style={{ ["--auth-canvas" as string]: canvasColor }}>
       <aside className="auth-split-panel">
