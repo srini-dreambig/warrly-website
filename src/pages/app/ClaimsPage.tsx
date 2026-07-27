@@ -1,0 +1,122 @@
+import { useCallback, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { createClaim, fetchClaims, fetchItems, type Claim, type VaultItem } from "../../lib/api";
+import { vaultClaimPath, vaultItemPath } from "../../lib/hosts";
+
+export function ClaimsPage() {
+  const navigate = useNavigate();
+  const [claims, setClaims] = useState<Claim[]>([]);
+  const [items, setItems] = useState<VaultItem[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [itemId, setItemId] = useState("");
+  const [issue, setIssue] = useState("");
+  const [creating, setCreating] = useState(false);
+
+  const reload = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const [list, its] = await Promise.all([fetchClaims(), fetchItems()]);
+      setClaims(Array.isArray(list) ? list : []);
+      setItems(Array.isArray(its) ? its : []);
+      setItemId((prev) => prev || (Array.isArray(its) && its[0] ? its[0].item_id : ""));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not load claims.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void reload();
+  }, [reload]);
+
+  async function onCreate(e: React.FormEvent) {
+    e.preventDefault();
+    if (!itemId || !issue.trim()) return;
+    setCreating(true);
+    setError("");
+    try {
+      const claim = await createClaim({ item_id: itemId, issue: issue.trim() });
+      setIssue("");
+      navigate(vaultClaimPath(claim.claim_id));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not start claim.");
+      setCreating(false);
+    }
+  }
+
+  return (
+    <main className="app-main">
+      <div className="wrap">
+        <div className="app-page-head">
+          <p className="page-eyebrow">Claims</p>
+          <h1>Claim inbox</h1>
+          <p className="lead">Draft, file, and track warranty claims against items in your vault.</p>
+        </div>
+
+        {error ? <p className="auth-error" role="alert">{error}</p> : null}
+
+        <form className="app-panel app-form-panel" onSubmit={(e) => void onCreate(e)}>
+          <h2>Start a claim</h2>
+          <label>
+            Item
+            <select value={itemId} onChange={(e) => setItemId(e.target.value)} required>
+              <option value="" disabled>
+                Select item
+              </option>
+              {items.map((it) => (
+                <option key={it.item_id} value={it.item_id}>
+                  {it.name || "Untitled"}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            What happened?
+            <textarea
+              rows={3}
+              value={issue}
+              onChange={(e) => setIssue(e.target.value)}
+              placeholder="Describe the issue for the brand support letter"
+              required
+            />
+          </label>
+          <button type="submit" className="btn btn-amber" disabled={creating || !items.length}>
+            {creating ? "Creating…" : "Draft claim"}
+          </button>
+        </form>
+
+        {loading ? <p className="app-muted">Loading…</p> : null}
+
+        {!loading && claims.length === 0 ? (
+          <div className="app-empty">
+            <p>No claims yet. Draft one above or open an item.</p>
+          </div>
+        ) : (
+          <ul className="app-item-list">
+            {claims.map((c) => (
+              <li key={c.claim_id}>
+                <Link to={vaultClaimPath(c.claim_id)}>
+                  <div>
+                    <strong>{c.item_name || "Claim"}</strong>
+                    <span>{c.issue || "No issue text"}</span>
+                  </div>
+                  <em className="app-status">{c.status || "draft"}</em>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {items.length ? (
+          <p className="app-muted" style={{ marginTop: 16 }}>
+            Tip: open an{" "}
+            <Link to={vaultItemPath(items[0].item_id)}>item</Link> for QR handoff capture on phone.
+          </p>
+        ) : null}
+      </div>
+    </main>
+  );
+}

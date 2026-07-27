@@ -18,19 +18,57 @@ function safeHost(url: string): string {
   }
 }
 
+function withAppPrefix(path: string): string {
+  const clean = path.startsWith("/") ? path : `/${path}`;
+  return isAppHost() ? clean : `/app${clean === "/" ? "" : clean}`;
+}
+
 /** Absolute vault home on the app subdomain. */
 export function vaultHomeUrl(): string {
   return `${config.appUrl.replace(/\/$/, "")}/`;
 }
 
-/** In-app path for inventory home (host-aware). */
+/** Dashboard home (stats overview). */
 export function vaultHomePath(): string {
-  return isAppHost() ? "/" : "/app";
+  return withAppPrefix("/");
+}
+
+/** Inventory list. */
+export function vaultInventoryPath(): string {
+  return withAppPrefix("/inventory");
 }
 
 /** In-app path for an item detail page. */
 export function vaultItemPath(itemId: string): string {
-  return isAppHost() ? `/items/${itemId}` : `/app/items/${itemId}`;
+  return withAppPrefix(`/items/${itemId}`);
+}
+
+export function vaultItemOffersPath(itemId: string): string {
+  return withAppPrefix(`/items/${itemId}/offers`);
+}
+
+export function vaultRemindersPath(): string {
+  return withAppPrefix("/reminders");
+}
+
+export function vaultClaimsPath(): string {
+  return withAppPrefix("/claims");
+}
+
+export function vaultClaimPath(claimId: string): string {
+  return withAppPrefix(`/claims/${claimId}`);
+}
+
+export function vaultHouseholdPath(): string {
+  return withAppPrefix("/household");
+}
+
+export function vaultReportsPath(): string {
+  return withAppPrefix("/reports");
+}
+
+export function vaultAccountPath(): string {
+  return withAppPrefix("/account");
 }
 
 /** Login URL — always prefer app subdomain in production hosts. */

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ActionQrModal } from "../../components/ActionQrModal";
 import { deleteItem, fetchItem } from "../../lib/api";
-import { vaultHomePath } from "../../lib/hosts";
+import { vaultInventoryPath, vaultItemOffersPath } from "../../lib/hosts";
 
 type HandoffAction = "add_document" | "capture_serial" | "start_claim";
 
@@ -42,7 +42,7 @@ export function ItemDetailPage() {
     setDeleting(true);
     try {
       await deleteItem(itemId);
-      navigate(vaultHomePath(), { replace: true });
+      navigate(vaultInventoryPath(), { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not delete item.");
       setDeleting(false);
@@ -59,8 +59,8 @@ export function ItemDetailPage() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="wrap app-detail">
-        <Link className="app-back" to={vaultHomePath()}>
-          ← Back to vault
+        <Link className="app-back" to={vaultInventoryPath()}>
+          ← Back to inventory
         </Link>
         {banner ? (
           <p className="app-banner" role="status">
@@ -95,6 +95,9 @@ export function ItemDetailPage() {
               <button type="button" className="btn btn-amber btn-sm" onClick={() => setHandoff("start_claim")}>
                 Start claim via QR
               </button>
+              <Link className="btn btn-forest btn-sm" to={vaultItemOffersPath(itemId)}>
+                Coverage offers
+              </Link>
               <button type="button" className="btn btn-forest btn-sm" onClick={() => void onDelete()} disabled={deleting}>
                 {deleting ? "Deleting…" : "Delete"}
               </button>

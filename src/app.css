@@ -992,7 +992,130 @@
   display: none;
 }
 
+.app-home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.app-panel {
+  background: var(--white);
+  border: 1px solid rgba(15, 93, 80, 0.1);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.app-panel h2 {
+  margin: 0 0 10px;
+  font-size: var(--dash-type, 14px);
+  color: var(--forest);
+}
+
+.app-form-panel {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.app-form-panel label {
+  display: grid;
+  gap: 6px;
+  font-size: var(--dash-type, 14px);
+  color: var(--forest);
+}
+
+.app-form-panel input,
+.app-form-panel select,
+.app-form-panel textarea {
+  width: 100%;
+  border: 1px solid rgba(15, 93, 80, 0.18);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: var(--dash-type, 14px);
+  background: #fff;
+}
+
+.app-simple-list,
+.app-card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.app-simple-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-simple-list a,
+.app-simple-list > li > div {
+  display: grid;
+  gap: 2px;
+  color: inherit;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.app-simple-list strong,
+.app-card strong {
+  font-size: var(--dash-type, 14px);
+  color: var(--forest);
+}
+
+.app-simple-list span,
+.app-card span {
+  font-size: var(--dash-type, 14px);
+  color: var(--muted);
+}
+
+.app-card {
+  background: var(--white);
+  border: 1px solid rgba(15, 93, 80, 0.1);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.app-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.app-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-invite-code {
+  letter-spacing: 0.12em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.app-pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f7faf8;
+  border: 1px solid rgba(15, 93, 80, 0.1);
+  border-radius: 10px;
+  padding: 12px;
+  margin: 0 0 12px;
+  font: inherit;
+  font-size: var(--dash-type, 14px);
+}
+
 @media (max-width: 900px) {
+  .app-home-grid {
+    grid-template-columns: 1fr;
+  }
   .dash-shell,
   .dash-shell--collapsed {
     grid-template-columns: 1fr;

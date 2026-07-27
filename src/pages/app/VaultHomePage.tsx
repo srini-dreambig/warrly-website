@@ -52,11 +52,10 @@ export function VaultHomePage() {
       <div className="wrap">
         <div className="app-page-head app-page-head--row">
           <div>
-            <p className="page-eyebrow">Web vault</p>
-            <h1>Your inventory</h1>
+            <p className="page-eyebrow">Inventory</p>
+            <h1>Your items</h1>
             <p className="lead">
-              Browse coverage here. Camera actions use a temporary QR — finish on your phone, then data syncs to this
-              vault.
+              Browse and open items here. Camera capture uses a temporary QR on your phone, then syncs back.
             </p>
           </div>
           <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>

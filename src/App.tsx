@@ -24,11 +24,19 @@ import {
   RedirectWwwAuthToSubdomain,
   RequireAuth,
 } from "./pages/app/AppShell";
+import { AccountPage } from "./pages/app/AccountPage";
+import { ClaimDetailPage } from "./pages/app/ClaimDetailPage";
+import { ClaimsPage } from "./pages/app/ClaimsPage";
 import { ForgotPasswordPage } from "./pages/app/ForgotPasswordPage";
-import { ResetPasswordPage } from "./pages/app/ResetPasswordPage";
+import { HomeDashboardPage } from "./pages/app/HomeDashboardPage";
+import { HouseholdPage } from "./pages/app/HouseholdPage";
 import { ItemDetailPage } from "./pages/app/ItemDetailPage";
+import { ItemOffersPage } from "./pages/app/ItemOffersPage";
 import { LoginPage } from "./pages/app/LoginPage";
 import { RegisterPage } from "./pages/app/RegisterPage";
+import { RemindersPage } from "./pages/app/RemindersPage";
+import { ReportsPage } from "./pages/app/ReportsPage";
+import { ResetPasswordPage } from "./pages/app/ResetPasswordPage";
 import { VaultHomePage } from "./pages/app/VaultHomePage";
 import "./styles.css";
 import "./investors.css";
@@ -42,6 +50,31 @@ function MarketingLayout() {
   );
 }
 
+function VaultRoutes({ base = "" }: { base?: string }) {
+  const p = (path: string) => {
+    if (!base) return path || "/";
+    if (!path || path === "/") return base;
+    return `${base}${path}`;
+  };
+  return (
+    <Route element={<RequireAuth />}>
+      <Route element={<AppShell />}>
+        <Route path={p("/")} element={<HomeDashboardPage />} />
+        <Route path={p("/inventory")} element={<VaultHomePage />} />
+        <Route path={p("/reminders")} element={<RemindersPage />} />
+        <Route path={p("/claims")} element={<ClaimsPage />} />
+        <Route path={p("/claims/:claimId")} element={<ClaimDetailPage />} />
+        <Route path={p("/household")} element={<HouseholdPage />} />
+        <Route path={p("/reports")} element={<ReportsPage />} />
+        <Route path={p("/account")} element={<AccountPage />} />
+        <Route path={p("/items/:itemId")} element={<ItemDetailPage />} />
+        <Route path={p("/items/:itemId/offers")} element={<ItemOffersPage />} />
+        <Route path={base ? `${base}/*` : "*"} element={<NotFoundPage compact />} />
+      </Route>
+    </Route>
+  );
+}
+
 function AppHostRoutes() {
   return (
     <Routes>
@@ -50,13 +83,7 @@ function AppHostRoutes() {
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/a/:token" element={<ActionLandingPage />} />
-      <Route element={<RequireAuth />}>
-        <Route element={<AppShell />}>
-          <Route path="/" element={<VaultHomePage />} />
-          <Route path="/items/:itemId" element={<ItemDetailPage />} />
-          <Route path="*" element={<NotFoundPage compact />} />
-        </Route>
-      </Route>
+      {VaultRoutes({ base: "" })}
     </Routes>
   );
 }
@@ -86,13 +113,7 @@ function MarketingHostRoutes() {
       <Route path="/a/:token" element={<ActionLandingPage />} />
 
       {local ? (
-        <Route element={<RequireAuth />}>
-          <Route element={<AppShell />}>
-            <Route path="/app" element={<VaultHomePage />} />
-            <Route path="/app/items/:itemId" element={<ItemDetailPage />} />
-            <Route path="/app/*" element={<NotFoundPage compact />} />
-          </Route>
-        </Route>
+        VaultRoutes({ base: "/app" })
       ) : (
         <>
           <Route path="/app" element={<RedirectWwwAppToSubdomain />} />
@@ -112,8 +133,8 @@ function MarketingHostRoutes() {
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/referral" element={<ReferralPage />} />
-        {featurePages.map((p) => (
-          <Route key={p.path} path={p.path} element={<FeatureRoute />} />
+        {featurePages.map((feat) => (
+          <Route key={feat.path} path={feat.path} element={<FeatureRoute />} />
         ))}
         <Route path="*" element={<NotFoundPage />} />
       </Route>

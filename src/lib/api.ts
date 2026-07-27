@@ -256,3 +256,177 @@ export async function cancelActionSession(sessionId: string) {
 export async function deleteItem(itemId: string) {
   return apiFetch<{ ok: boolean }>(`/api/items/${encodeURIComponent(itemId)}`, { method: "DELETE" });
 }
+
+export type Reminder = {
+  reminder_id: string;
+  item_id?: string;
+  item_name?: string;
+  item_brand?: string | null;
+  type?: string;
+  label?: string;
+  fire_at?: string | null;
+  state?: string;
+};
+
+export type Claim = {
+  claim_id: string;
+  item_id: string;
+  item_name?: string;
+  issue?: string;
+  status?: string;
+  message?: string;
+  brand_support_phone?: string | null;
+  brand_support_url?: string | null;
+  brand_escalation_email?: string | null;
+  timeline?: { at?: string; event?: string }[];
+  coverage_id?: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type HouseholdMember = {
+  user_id: string;
+  name?: string | null;
+  email?: string;
+  picture?: string | null;
+  role?: string;
+  joined_at?: string | null;
+};
+
+export type Household = {
+  household_id: string;
+  name: string;
+  created_by?: string;
+  invite_code?: string | null;
+  members: HouseholdMember[];
+  my_role?: string | null;
+};
+
+export type Offer = {
+  offer_id: string;
+  partner?: string;
+  title?: string;
+  description?: string;
+  price?: number | null;
+  currency?: string;
+  term_months?: number | null;
+  checkout_url?: string;
+};
+
+export type Base64File = {
+  filename: string;
+  mime: string;
+  base64: string;
+};
+
+export function downloadBase64File(file: Base64File) {
+  const bin = atob(file.base64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i += 1) bytes[i] = bin.charCodeAt(i);
+  const blob = new Blob([bytes], { type: file.mime || "application/octet-stream" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = file.filename || "download";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export async function fetchReminders() {
+  return apiFetch<Reminder[]>("/api/reminders");
+}
+
+export async function actionReminder(reminderId: string, action: "snooze" | "done") {
+  return apiFetch<{ ok: boolean }>(`/api/reminders/${encodeURIComponent(reminderId)}/action`, {
+    method: "POST",
+    body: JSON.stringify({ action }),
+  });
+}
+
+export async function fetchClaims() {
+  return apiFetch<Claim[]>("/api/claims");
+}
+
+export async function fetchClaim(claimId: string) {
+  return apiFetch<Claim>(`/api/claims/${encodeURIComponent(claimId)}`);
+}
+
+export async function createClaim(body: { item_id: string; issue: string; coverage_id?: string }) {
+  return apiFetch<Claim>("/api/claims", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function updateClaim(claimId: string, body: { status?: string; note?: string }) {
+  return apiFetch<Claim>(`/api/claims/${encodeURIComponent(claimId)}`, {
+    method: "PATCH",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function fetchClaimPack(claimId: string) {
+  return apiFetch<Base64File>(`/api/claims/${encodeURIComponent(claimId)}/pack`);
+}
+
+export async function fetchHousehold() {
+  return apiFetch<Household>("/api/households/mine");
+}
+
+export async function renameHousehold(name: string) {
+  return apiFetch<{ ok: boolean }>("/api/households/mine", {
+    method: "PATCH",
+    body: JSON.stringify({ name }),
+  });
+}
+
+export async function createHouseholdInvite() {
+  return apiFetch<{ code: string; expires_in_days: number }>("/api/households/mine/invite", {
+    method: "POST",
+    body: "{}",
+  });
+}
+
+export async function joinHousehold(code: string) {
+  return apiFetch<{ ok: boolean; household_id: string; already_member?: boolean }>("/api/households/join", {
+    method: "POST",
+    body: JSON.stringify({ code }),
+  });
+}
+
+export async function removeHouseholdMember(userId: string) {
+  return apiFetch<{ ok: boolean }>(`/api/households/mine/members/${encodeURIComponent(userId)}`, {
+    method: "DELETE",
+  });
+}
+
+export async function updateProfile(body: { name?: string; remove_picture?: boolean }) {
+  return apiFetch<AuthUser>("/api/auth/profile", {
+    method: "PATCH",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function exportMyData() {
+  return apiFetch<Record<string, unknown>>("/api/auth/export");
+}
+
+export async function deleteAccount() {
+  return apiFetch<{ ok: boolean; deleted?: boolean }>("/api/auth/account", { method: "DELETE" });
+}
+
+export async function fetchHomeInventoryReport() {
+  return apiFetch<Base64File>("/api/reports/home-inventory");
+}
+
+export async function fetchOffers(itemId?: string) {
+  const q = itemId ? `?item_id=${encodeURIComponent(itemId)}` : "";
+  return apiFetch<Offer[]>(`/api/offers${q}`);
+}
+
+export async function clickOffer(offerId: string, itemId: string) {
+  return apiFetch<{ url: string; attribution_token: string }>("/api/offers/click", {
+    method: "POST",
+    body: JSON.stringify({ offer_id: offerId, item_id: itemId }),
+  });
+}

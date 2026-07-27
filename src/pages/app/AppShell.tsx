@@ -3,7 +3,17 @@ import { Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { BrandLockup } from "../../components/BrandLockup";
 import { config } from "../../config";
 import { useAuth } from "../../lib/auth";
-import { isAppHost, loginUrl, vaultHomePath } from "../../lib/hosts";
+import {
+  isAppHost,
+  loginUrl,
+  vaultAccountPath,
+  vaultClaimsPath,
+  vaultHomePath,
+  vaultHouseholdPath,
+  vaultInventoryPath,
+  vaultRemindersPath,
+  vaultReportsPath,
+} from "../../lib/hosts";
 
 const COLLAPSE_KEY = "warrly_nav_collapsed";
 
@@ -61,6 +71,16 @@ export function RedirectWwwAuthToSubdomain() {
   );
 }
 
+const NAV = [
+  { to: vaultHomePath, end: true, label: "Home", icon: "⌂" },
+  { to: vaultInventoryPath, end: false, label: "Inventory", icon: "▦" },
+  { to: vaultRemindersPath, end: false, label: "Reminders", icon: "◔" },
+  { to: vaultClaimsPath, end: false, label: "Claims", icon: "▤" },
+  { to: vaultHouseholdPath, end: false, label: "Household", icon: "⚬" },
+  { to: vaultReportsPath, end: false, label: "Reports", icon: "▥" },
+  { to: vaultAccountPath, end: false, label: "Account", icon: "☺" },
+] as const;
+
 export function AppShell() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -107,13 +127,19 @@ export function AppShell() {
         <BrandLockup to={home} className="dash-brand" />
 
         <nav className="dash-nav">
-          {/* Product destinations only — marketing stays on www */}
-          <NavLink to={home} end className={({ isActive }) => (isActive ? "dash-link is-active" : "dash-link")}>
-            <span className="dash-link-icon" aria-hidden="true">
-              ▦
-            </span>
-            <span className="dash-link-label">Inventory</span>
-          </NavLink>
+          {NAV.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.to()}
+              end={item.end}
+              className={({ isActive }) => (isActive ? "dash-link is-active" : "dash-link")}
+            >
+              <span className="dash-link-icon" aria-hidden="true">
+                {item.icon}
+              </span>
+              <span className="dash-link-label">{item.label}</span>
+            </NavLink>
+          ))}
         </nav>
 
         <div className="dash-sidebar-foot">
@@ -121,7 +147,7 @@ export function AppShell() {
             <span className="dash-user-name">{user?.name || user?.email}</span>
             <span className="dash-user-email">{user?.email}</span>
           </div>
-          <button type="button" className="btn btn-forest btn-sm dash-logout" onClick={onLogout}>
+          <button type="button" className="btn btn-forest btn-sm dash-logout" onClick={() => void onLogout()}>
             Log out
           </button>
         </div>
