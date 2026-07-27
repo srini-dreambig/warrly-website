@@ -16,21 +16,30 @@
   color: var(--forest-dark);
   overflow: hidden;
   display: grid;
-  grid-template-rows: auto auto auto;
-  gap: clamp(16px, 2.4vh, 28px);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(12px, 2vh, 20px);
   padding: clamp(24px, 4vh, 48px) clamp(28px, 4.5vw, 56px);
-  align-content: center;
-  justify-items: center;
-  text-align: center;
+  align-content: stretch;
 }
 
 .auth-split-brand.brand-lockup {
   color: var(--forest);
-  justify-self: center;
+  justify-self: start;
+  align-self: start;
 }
 
 .auth-split-brand .brand-tagline {
   color: var(--forest);
+}
+
+.auth-split-panel-body {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: clamp(16px, 2.4vh, 28px);
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  min-height: 0;
 }
 
 .auth-split-art {
@@ -111,7 +120,6 @@
 
 .auth-split-mobile-brand {
   display: none;
-  margin-bottom: 18px;
 }
 
 .auth-split-brand--on-green.brand-lockup {
@@ -304,14 +312,6 @@
 
   .auth-split-quote p {
     font-size: 1rem;
-  }
-
-  .auth-split-mobile-brand {
-    display: block;
-  }
-
-  .auth-split-panel .auth-split-brand {
-    display: none;
   }
 
   .auth-split-form {

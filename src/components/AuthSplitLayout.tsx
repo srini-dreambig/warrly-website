@@ -37,17 +37,16 @@ export function AuthSplitLayout({
     <main className="auth-split" style={{ ["--auth-canvas" as string]: canvasColor }}>
       <aside className="auth-split-panel">
         <BrandLockup to="/" className="auth-split-brand" />
-        <img className="auth-split-art" src={imageSrc} alt={imageAlt} />
-        <blockquote className="auth-split-quote">
-          <p>“{quote}”</p>
-          <footer>— {attribution}</footer>
-        </blockquote>
+        <div className="auth-split-panel-body">
+          <img className="auth-split-art" src={imageSrc} alt={imageAlt} />
+          <blockquote className="auth-split-quote">
+            <p>“{quote}”</p>
+            <footer>— {attribution}</footer>
+          </blockquote>
+        </div>
       </aside>
       <section className="auth-split-form">
         <div className="auth-split-form-inner">
-          <div className="auth-split-mobile-brand">
-            <BrandLockup to="/" className="auth-split-brand--on-green" />
-          </div>
           {children}
           <p className="auth-split-legal">
             By continuing you agree to our <Link to="/terms">Terms</Link> and{" "}
