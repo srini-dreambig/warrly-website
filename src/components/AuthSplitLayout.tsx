@@ -7,28 +7,33 @@ type Props = {
   imageAlt: string;
   quote: string;
   attribution?: string;
+  /** CSS color matching the illustration canvas */
+  canvasColor?: string;
   children: ReactNode;
 };
 
-export function AuthSplitLayout({ imageSrc, imageAlt, quote, attribution = "Warrly", children }: Props) {
+export function AuthSplitLayout({
+  imageSrc,
+  imageAlt,
+  quote,
+  attribution = "Warrly",
+  canvasColor = "var(--illu-welcome-account)",
+  children,
+}: Props) {
   return (
-    <main className="auth-split">
-      <aside className="auth-split-panel" aria-hidden={false}>
-        <div className="auth-split-panel-inner">
-          <BrandLockup to="/" className="auth-split-brand auth-split-brand--light" />
-          <figure className="auth-split-figure">
-            <img src={imageSrc} alt={imageAlt} />
-          </figure>
-          <blockquote className="auth-split-quote">
-            <p>“{quote}”</p>
-            <footer>— {attribution}</footer>
-          </blockquote>
-        </div>
+    <main className="auth-split" style={{ ["--auth-canvas" as string]: canvasColor }}>
+      <aside className="auth-split-panel">
+        <BrandLockup to="/" className="auth-split-brand" />
+        <img className="auth-split-art" src={imageSrc} alt={imageAlt} />
+        <blockquote className="auth-split-quote">
+          <p>“{quote}”</p>
+          <footer>— {attribution}</footer>
+        </blockquote>
       </aside>
       <section className="auth-split-form">
         <div className="auth-split-form-inner">
           <div className="auth-split-mobile-brand">
-            <BrandLockup to="/" />
+            <BrandLockup to="/" className="auth-split-brand--on-green" />
           </div>
           {children}
           <p className="auth-split-legal">

@@ -26,6 +26,7 @@ export function ForgotPasswordPage() {
     <AuthSplitLayout
       imageSrc={ART.allClear}
       imageAlt="Warrly all-clear illustration"
+      canvasColor="var(--illu-all-clear)"
       quote="We'll get you back into your vault — coverage shouldn't vanish with a forgotten password."
     >
       <div className="auth-panel-card">

@@ -35,6 +35,7 @@ export function LoginPage() {
     <AuthSplitLayout
       imageSrc={ART.welcomeAccount}
       imageAlt="Warrly vault welcome illustration"
+      canvasColor="var(--illu-welcome-account)"
       quote="Every warranty, kept — so the next claim starts with proof, not panic."
     >
       <div className="auth-panel-card">

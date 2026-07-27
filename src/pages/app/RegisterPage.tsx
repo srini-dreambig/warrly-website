@@ -36,6 +36,7 @@ export function RegisterPage() {
     <AuthSplitLayout
       imageSrc={ART.welcomePersonal}
       imageAlt="Warrly personal vault illustration"
+      canvasColor="var(--illu-welcome-personal)"
       quote="Snap the receipt once. Your vault remembers — coverage, claims, and calm."
     >
       <div className="auth-panel-card">
