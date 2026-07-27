@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { BrandLockup } from "../../components/BrandLockup";
+import { AuthSplitLayout } from "../../components/AuthSplitLayout";
+import { ART } from "../../brand";
 import { config } from "../../config";
 import { useAuth } from "../../lib/auth";
 import { formatApiError } from "../../lib/api";
@@ -31,11 +32,15 @@ export function LoginPage() {
   }
 
   return (
-    <main className="auth-page">
-      <div className="auth-card">
-        <BrandLockup to="/" />
-        <h1>Log in to your vault</h1>
-        <p className="auth-lede">Use the same account as the Warrly mobile app when it ships.</p>
+    <AuthSplitLayout
+      imageSrc={ART.welcomeAccount}
+      imageAlt="Warrly vault welcome illustration"
+      quote="Every warranty, kept — so the next claim starts with proof, not panic."
+    >
+      <div className="auth-panel-card">
+        <p className="auth-eyebrow">Welcome back</p>
+        <h1>Log in</h1>
+        <p className="auth-lede">Use the same account that will sync with the Warrly mobile app.</p>
         <form onSubmit={onSubmit} className="auth-form">
           <label>
             <span>Email</span>
@@ -45,10 +50,16 @@ export function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
             />
           </label>
           <label>
-            <span>Password</span>
+            <div className="auth-label-row">
+              <span>Password</span>
+              <Link className="auth-forgot" to="/forgot-password">
+                Forgot password?
+              </Link>
+            </div>
             <input
               type="password"
               autoComplete="current-password"
@@ -68,9 +79,11 @@ export function LoginPage() {
           </button>
         </form>
         <p className="auth-foot">
-          New here? <Link to="/register">Create an account</Link> · <Link to="/waitlist">Join waitlist</Link>
+          New here? <Link to="/register">Create an account</Link>
+          {" · "}
+          <Link to="/waitlist">Join waitlist</Link>
         </p>
       </div>
-    </main>
+    </AuthSplitLayout>
   );
 }

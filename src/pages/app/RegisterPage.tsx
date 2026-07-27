@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { BrandLockup } from "../../components/BrandLockup";
+import { AuthSplitLayout } from "../../components/AuthSplitLayout";
+import { ART } from "../../brand";
 import { config } from "../../config";
 import { useAuth } from "../../lib/auth";
 import { formatApiError } from "../../lib/api";
@@ -32,11 +33,15 @@ export function RegisterPage() {
   }
 
   return (
-    <main className="auth-page">
-      <div className="auth-card">
-        <BrandLockup to="/" />
-        <h1>Create your vault</h1>
-        <p className="auth-lede">Start free — syncs with the same Neon-backed Warrly API as the mobile app.</p>
+    <AuthSplitLayout
+      imageSrc={ART.welcomePersonal}
+      imageAlt="Warrly personal vault illustration"
+      quote="Snap the receipt once. Your vault remembers — coverage, claims, and calm."
+    >
+      <div className="auth-panel-card">
+        <p className="auth-eyebrow">Start free</p>
+        <h1>Create account</h1>
+        <p className="auth-lede">Same Neon-backed vault as the mobile app. Free starts at five items.</p>
         <form onSubmit={onSubmit} className="auth-form">
           <label>
             <span>Name</span>
@@ -55,6 +60,7 @@ export function RegisterPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
             />
           </label>
           <label>
@@ -75,13 +81,13 @@ export function RegisterPage() {
             </p>
           ) : null}
           <button className="btn btn-amber" type="submit" disabled={submitting || loading}>
-            {submitting ? "Creating…" : "Create account"}
+            {submitting ? "Creating…" : "Sign up"}
           </button>
         </form>
         <p className="auth-foot">
           Already have an account? <Link to="/login">Log in</Link>
         </p>
       </div>
-    </main>
+    </AuthSplitLayout>
   );
 }
