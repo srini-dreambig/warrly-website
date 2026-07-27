@@ -24,7 +24,7 @@ export const privacySections: LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Warrly is operated by Dataplexor (“we”, “us”, “our”). We provide a warranty vault for households and business workspaces, with a product beachhead in India. For privacy and data-protection requests, contact us at the email published on our Contact page (default: info@dataplexor.com).",
+        text: "Warrly is operated by Dataplexor (“we”, “us”, “our”). We provide a warranty vault for households and business workspaces, with an India-first launch market. For privacy and data-protection requests, contact us at the email published on our Contact page (default: info@dataplexor.com).",
       },
       {
         type: "p",
@@ -127,7 +127,7 @@ export const privacySections: LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Our product beachhead is India. Under the Digital Personal Data Protection Act, 2023 (DPDP Act) and rules as they apply, we rely on:",
+        text: "Our launch market is India. Under the Digital Personal Data Protection Act, 2023 (DPDP Act) and rules as they apply, we rely on:",
       },
       {
         type: "ul",

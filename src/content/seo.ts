@@ -61,7 +61,7 @@ export const staticPagesSeo: PageSeo[] = [
     path: "/investors",
     title: "For Investors | Warrly",
     description:
-      "Investor overview for Warrly — the warranty vault with an India product beachhead. Mission, market, product, and go-to-market.",
+      "Investor overview for Warrly — the warranty vault with an India-first launch market. Mission, market, product, and go-to-market.",
   },
   {
     path: "/contact",

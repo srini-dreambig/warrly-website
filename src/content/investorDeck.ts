@@ -3,7 +3,7 @@ import { config } from "../config";
 
 /**
  * Investor pitch deck.
- * Product beachhead = India (market, GTM, sizing). Investors = open audience.
+ * Launch market = India (market, GTM, sizing). Investors = open audience.
  * No global software TAM. No fictional traction.
  */
 
@@ -55,7 +55,7 @@ export const investorSlides: DeckSlide[] = [
     image: ART.welcomeAccount,
     imageAlt: "Warrly",
     body: "Capture proof at purchase. Track coverage across brands. Assemble claim-ready evidence before the service centre asks for the bill.",
-    bullets: ["Built by Dataplexor", "Product beachhead: India", "Free → Plus → Pro"],
+    bullets: ["Built by Dataplexor", "Launch market: India", "Free → Plus → Pro"],
   },
   {
     id: "agenda",
@@ -65,7 +65,7 @@ export const investorSlides: DeckSlide[] = [
     steps: [
       { n: "01", title: "The problem", body: "Invoices vanish. Claims fail. Families pay cash for repairs that should have been covered." },
       { n: "02", title: "Why now", body: "Phones + e-comm receipts already exist in India — coverage still does not." },
-      { n: "03", title: "Market (India beachhead)", body: "Bottom-up sizing on households and extended-warranty demand — not global software TAM." },
+      { n: "03", title: "Market (India launch)", body: "Bottom-up sizing on households and extended-warranty demand — not global software TAM." },
       { n: "04", title: "Product & model", body: "Free → Plus → Pro, referral capacity, unit thesis in ₹." },
       { n: "05", title: "Path & ask", body: "Honest stage, near-term plan, what capital unlocks." },
     ],
@@ -99,7 +99,7 @@ export const investorSlides: DeckSlide[] = [
         source: "YouGov",
       },
     ],
-    note: "In our India beachhead this shows up as “no GST bill, no service” at authorised centres — even when coverage is still live.",
+    note: "In our India launch market this shows up as “no GST bill, no service” at authorised centres — even when coverage is still live.",
   },
   {
     id: "cost",
@@ -183,12 +183,12 @@ export const investorSlides: DeckSlide[] = [
         source: "India e-commerce industry analyses",
       },
     ],
-    note: "The receipt is already digital in our beachhead. The warranty lifecycle is not — that gap is the wedge.",
+    note: "The receipt is already digital in our launch market. The warranty lifecycle is not — that gap is the wedge.",
   },
   {
     id: "market",
     section: "Market",
-    title: "India beachhead sizing — bottom-up",
+    title: "India launch-market sizing — bottom-up",
     layout: "market",
     subtitle: "We size from Indian households and the extended-warranty / after-sales stack they already pay into — not a global enterprise software TAM.",
     market: [
@@ -218,7 +218,7 @@ export const investorSlides: DeckSlide[] = [
   {
     id: "som",
     section: "Market",
-    title: "Beachhead math (directional)",
+    title: "Launch-market math (directional)",
     layout: "market",
     subtitle: "Bottom-up thesis for the India product scope — labelled as directional, not an audited forecast.",
     market: [
@@ -319,7 +319,7 @@ export const investorSlides: DeckSlide[] = [
     section: "Status",
     title: "Early-stage. Honest. Measurable.",
     layout: "status",
-    body: "Product and marketing surface are live. This raise is to prove retention and paid conversion in the India beachhead — not to sell a fictional ARR chart.",
+    body: "Product and marketing surface are live. This raise is to prove retention and paid conversion in the India launch market — not to sell a fictional ARR chart.",
     steps: [
       { n: "Now", title: "Shipped", body: "Consumer + business vault flows · Free / Plus / Pro packaging · referral capacity." },
       { n: "Next 2 qtrs", title: "Prove", body: "Activation → first receipt → reminder value · cohort retention · Plus conversion · Pro design partners." },
@@ -337,14 +337,14 @@ export const investorSlides: DeckSlide[] = [
     layout: "ask",
     image: ART.allClear,
     imageAlt: "Coverage clarity",
-    body: "We are raising to turn warranty chaos into a retained habit in our India beachhead — then expand monetisation on the same product.",
+    body: "We are raising to turn warranty chaos into a retained habit in our India launch market — then expand monetisation on the same product.",
     ask: {
       amount: "Use of capital",
       use: [
         "Product: extract quality, claims packs, Hindi/regional UX polish",
         "Growth: organic + referral loops; measured paid tests in top cities",
         "Proof: analytics, cohort instrumentation, Pro design-partner program",
-        "Team: beachhead GTM and customer success capacity",
+        "Team: India GTM and customer success capacity",
       ],
     },
     bullets: [
@@ -358,7 +358,7 @@ export const investorSlides: DeckSlide[] = [
     section: "Appendix",
     title: "Selected references",
     layout: "sources",
-    subtitle: "Third-party estimates vary by scope. Directional for diligence — not audited Warrly financials. Market figures are India beachhead unless noted.",
+    subtitle: "Third-party estimates vary by scope. Directional for diligence — not audited Warrly financials. Market figures are India launch market unless noted.",
     steps: [
       { n: "01", title: "IMARC", body: "India Extended Warranty ~USD 4.40B (2025); ~USD 10.04B by 2034; ~9.6% CAGR" },
       { n: "02", title: "Credence", body: "India CE Extended Warranty ~USD 3.58B (2023) → ~USD 8.80B (2032); ~10.5% CAGR" },

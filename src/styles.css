@@ -2124,24 +2124,24 @@ h4,
   opacity: 0.65;
 }
 
-.beachhead-strip {
+.launch-market-strip {
   padding-bottom: 56px;
   color: var(--ink);
 }
 
-.beachhead-grid {
+.launch-market-grid {
   margin-top: 28px;
   text-align: left;
 }
 
-.beachhead-grid article {
+.launch-market-grid article {
   background: var(--white);
   border: 1px solid rgba(15, 93, 80, 0.12);
   border-radius: 20px;
   padding: 22px 20px;
 }
 
-.beachhead-grid h3 {
+.launch-market-grid h3 {
   margin: 0 0 10px;
   font-size: 18px;
   font-weight: var(--fw);
@@ -2149,7 +2149,7 @@ h4,
   color: var(--forest);
 }
 
-.beachhead-grid p {
+.launch-market-grid p {
   margin: 0;
   font-size: 15px;
   font-weight: 400;
@@ -2157,7 +2157,7 @@ h4,
   color: var(--muted);
 }
 
-.beachhead-actions {
+.launch-market-actions {
   justify-content: center;
   margin-top: 1.5rem;
 }

@@ -53,7 +53,7 @@ export function HomePage() {
                 See how it works
               </Link>
             </div>
-            <p className="hero-note">Free for your first 5 items. No card required. Product beachhead: India.</p>
+            <p className="hero-note">Free for your first 5 items. No card required. Launch market: India.</p>
           </div>
           <div className="hero-art">
             <img src={ART.welcomeAccount} alt="Warrly vault on your phone with coverage at a glance" />
@@ -141,7 +141,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section-center beachhead-strip" id="why-warrly">
+      <section className="section-center launch-market-strip" id="why-warrly">
         <div className="wrap">
           <h2>One avoided repair can fund years of Warrly</h2>
           <p className="lead">
@@ -149,7 +149,7 @@ export function HomePage() {
             range for screens and boards. Keeping proof alive is not admin theatre — it is money you do not have to
             spend twice.
           </p>
-          <div className="problem-cost-grid beachhead-grid">
+          <div className="problem-cost-grid launch-market-grid">
             <article>
               <h3>Win at purchase</h3>
               <p>Install where the Flipkart / Amazon / UPI receipt already lives — on the phone in your hand.</p>
@@ -163,7 +163,7 @@ export function HomePage() {
               <p>Same product family for families and multi-site teams — sites, QR tags, vendors, exports.</p>
             </article>
           </div>
-          <div className="hero-actions beachhead-actions">
+          <div className="hero-actions launch-market-actions">
             <Link className="btn btn-forest" to="/plans">
               Compare plans
             </Link>

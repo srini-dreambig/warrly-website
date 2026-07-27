@@ -24,7 +24,7 @@ const principles = [
 
 const standards = [
   {
-    title: "India beachhead, honest scope",
+    title: "India-first, honest scope",
     body: "We build first for Indian households and multi-site teams — authorised centres, e-comm invoices, GST bills — without pretending we are a global compliance platform on day one.",
   },
   {
@@ -71,10 +71,10 @@ export function AboutPage() {
               designed for the day a refrigerator fails or a clinic scanner dies mid-shift.
             </p>
             <p className="feat-lede about-lede-wide">
-              In our India beachhead, authorised service often still means “no bill, no service,” even when coverage is
-              live. Every meaningful purchase deserves a durable record: what it was, when it was bought, how long it is
-              covered, and where the documents live. Reminders should arrive while you can still act. Claims should start
-              from evidence you already have.
+              In our India launch market, authorised service often still means “no bill, no service,” even when coverage
+              is live. Every meaningful purchase deserves a durable record: what it was, when it was bought, how long it
+              is covered, and where the documents live. Reminders should arrive while you can still act. Claims should
+              start from evidence you already have.
             </p>
           </div>
         </div>
