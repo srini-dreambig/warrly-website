@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "qrcode";
 import {
   cancelActionSession,
@@ -41,9 +41,11 @@ export function ActionQrModal({ action, itemId, open, onClose, onCompleted }: Pr
   const [qr, setQr] = useState("");
   const [error, setError] = useState("");
   const [status, setStatus] = useState("pending");
+  const completedRef = useRef(false);
 
   useEffect(() => {
     if (!open) return;
+    completedRef.current = false;
     let cancelled = false;
     (async () => {
       setError("");
@@ -78,6 +80,7 @@ export function ActionQrModal({ action, itemId, open, onClose, onCompleted }: Pr
 
   useEffect(() => {
     if (!open || !session?.token) return;
+    if (status === "completed" || status === "expired" || status === "cancelled") return;
     let cancelled = false;
     const tick = async () => {
       try {
@@ -85,14 +88,19 @@ export function ActionQrModal({ action, itemId, open, onClose, onCompleted }: Pr
         if (cancelled) return;
         setStatus(live.status);
         if (live.status === "completed") {
-          onCompleted?.(live);
+          if (!completedRef.current) {
+            completedRef.current = true;
+            onCompleted?.(live);
+          }
           return;
         }
         if (live.status === "expired" || live.status === "cancelled") {
           setError(`This link is ${live.status}. Close and generate a new QR.`);
         }
-      } catch {
-        /* keep polling */
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Could not check link status.");
+        }
       }
     };
     const id = window.setInterval(tick, 2500);
@@ -101,11 +109,12 @@ export function ActionQrModal({ action, itemId, open, onClose, onCompleted }: Pr
       cancelled = true;
       window.clearInterval(id);
     };
-  }, [open, session?.token, onCompleted]);
+  }, [open, session?.token, status, onCompleted]);
 
   if (!open) return null;
 
   const copy = COPY[action];
+  const terminal = status === "completed" || status === "expired" || status === "cancelled";
 
   async function onCancel() {
     if (session?.session_id && status === "pending") {
@@ -135,7 +144,11 @@ export function ActionQrModal({ action, itemId, open, onClose, onCompleted }: Pr
         ) : null}
 
         <div className="action-qr-frame">
-          {qr ? <img src={qr} alt="Temporary action QR code" width={220} height={220} /> : <div className="action-qr-skeleton" />}
+          {qr ? (
+            <img src={qr} alt="Temporary action QR code" width={220} height={220} />
+          ) : error ? null : (
+            <div className="action-qr-skeleton" />
+          )}
         </div>
 
         <p className={`action-qr-status action-qr-status--${status}`}>
@@ -146,7 +159,7 @@ export function ActionQrModal({ action, itemId, open, onClose, onCompleted }: Pr
           {status === "cancelled" && "Cancelled"}
         </p>
 
-        {session?.web_url ? (
+        {session?.web_url && !terminal ? (
           <p className="action-qr-link">
             Or open on phone:{" "}
             <a href={session.web_url} target="_blank" rel="noreferrer">
@@ -157,7 +170,7 @@ export function ActionQrModal({ action, itemId, open, onClose, onCompleted }: Pr
 
         <div className="action-qr-actions">
           <button type="button" className="btn btn-forest" onClick={onCancel}>
-            {status === "completed" ? "Close" : "Cancel"}
+            {status === "completed" ? "Close" : terminal ? "Close" : "Cancel"}
           </button>
         </div>
       </div>

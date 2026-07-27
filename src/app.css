@@ -570,6 +570,13 @@
   font-size: 14px;
 }
 
+.app-error-block {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin-bottom: 16px;
+}
+
 .app-handoff-row {
   display: flex;
   flex-wrap: wrap;

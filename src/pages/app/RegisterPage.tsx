@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthSplitLayout } from "../../components/AuthSplitLayout";
 import { ART } from "../../brand";
@@ -33,62 +34,68 @@ export function RegisterPage() {
   }
 
   return (
-    <AuthSplitLayout
-      imageSrc={ART.welcomePersonal}
-      imageAlt="Warrly personal vault illustration"
-      canvasColor="var(--illu-welcome-personal)"
-      quote="Snap the receipt once. Your vault remembers — coverage, claims, and calm."
-    >
-      <div className="auth-panel-card">
-        <p className="auth-eyebrow">Start free</p>
-        <h1>Create account</h1>
-        <p className="auth-lede">Same Neon-backed vault as the mobile app. Free starts at five items.</p>
-        <form onSubmit={onSubmit} className="auth-form">
-          <label>
-            <span>Name</span>
-            <input
-              autoComplete="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
-            />
-          </label>
-          <label>
-            <span>Email</span>
-            <input
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-            />
-          </label>
-          <label>
-            <span>Password</span>
-            <input
-              type="password"
-              autoComplete="new-password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="At least 8 characters"
-            />
-          </label>
-          {error ? (
-            <p className="auth-error" role="alert">
-              {error}
-            </p>
-          ) : null}
-          <button className="btn btn-amber" type="submit" disabled={submitting || loading}>
-            {submitting ? "Creating…" : "Sign up"}
-          </button>
-        </form>
-        <p className="auth-foot">
-          Already have an account? <Link to="/login">Log in</Link>
-        </p>
-      </div>
-    </AuthSplitLayout>
+    <>
+      <Helmet>
+        <title>Create account · Warrly</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <AuthSplitLayout
+        imageSrc={ART.welcomePersonal}
+        imageAlt="Warrly personal vault illustration"
+        canvasColor="var(--illu-welcome-personal)"
+        quote="Snap the receipt once. Your vault remembers — coverage, claims, and calm."
+      >
+        <div className="auth-panel-card">
+          <p className="auth-eyebrow">Start free</p>
+          <h1>Create account</h1>
+          <p className="auth-lede">Same Neon-backed vault as the mobile app. Free starts at five items.</p>
+          <form onSubmit={onSubmit} className="auth-form">
+            <label>
+              <span>Name</span>
+              <input
+                autoComplete="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+              />
+            </label>
+            <label>
+              <span>Email</span>
+              <input
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+              />
+            </label>
+            <label>
+              <span>Password</span>
+              <input
+                type="password"
+                autoComplete="new-password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="At least 8 characters"
+              />
+            </label>
+            {error ? (
+              <p className="auth-error" role="alert">
+                {error}
+              </p>
+            ) : null}
+            <button className="btn btn-amber" type="submit" disabled={submitting || loading}>
+              {submitting ? "Creating…" : "Sign up"}
+            </button>
+          </form>
+          <p className="auth-foot">
+            Already have an account? <Link to="/login">Log in</Link>
+          </p>
+        </div>
+      </AuthSplitLayout>
+    </>
   );
 }

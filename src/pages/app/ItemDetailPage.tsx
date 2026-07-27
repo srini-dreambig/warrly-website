@@ -1,17 +1,20 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ActionQrModal } from "../../components/ActionQrModal";
-import { fetchItem } from "../../lib/api";
+import { deleteItem, fetchItem } from "../../lib/api";
 
 type HandoffAction = "add_document" | "capture_serial" | "start_claim";
 
 export function ItemDetailPage() {
   const { itemId = "" } = useParams();
+  const navigate = useNavigate();
   const [item, setItem] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [handoff, setHandoff] = useState<HandoffAction | null>(null);
   const [banner, setBanner] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   const reload = useCallback(async () => {
     if (!itemId) return;
@@ -22,6 +25,7 @@ export function ItemDetailPage() {
       setItem(data as Record<string, unknown>);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not load item.");
+      setItem(null);
     } finally {
       setLoading(false);
     }
@@ -31,11 +35,28 @@ export function ItemDetailPage() {
     void reload();
   }, [reload]);
 
+  async function onDelete() {
+    if (!itemId) return;
+    if (!window.confirm("Delete this item from your vault? This cannot be undone.")) return;
+    setDeleting(true);
+    try {
+      await deleteItem(itemId);
+      navigate("/app", { replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not delete item.");
+      setDeleting(false);
+    }
+  }
+
   const docs = Array.isArray(item?.documents) ? (item?.documents as Record<string, unknown>[]) : [];
   const coverages = Array.isArray(item?.coverages) ? (item?.coverages as Record<string, unknown>[]) : [];
 
   return (
     <main className="app-main">
+      <Helmet>
+        <title>{item ? `${String(item.name || "Item")} · Warrly` : "Item · Warrly"}</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="wrap app-detail">
         <Link className="app-back" to="/app">
           ← Back to vault
@@ -47,9 +68,12 @@ export function ItemDetailPage() {
         ) : null}
         {loading ? <p className="app-muted">Loading…</p> : null}
         {error ? (
-          <p className="auth-error" role="alert">
-            {error}
-          </p>
+          <div className="app-error-block" role="alert">
+            <p className="auth-error">{error}</p>
+            <button type="button" className="btn btn-forest btn-sm" onClick={() => void reload()}>
+              Retry
+            </button>
+          </div>
         ) : null}
         {item ? (
           <>
@@ -69,6 +93,9 @@ export function ItemDetailPage() {
               </button>
               <button type="button" className="btn btn-amber btn-sm" onClick={() => setHandoff("start_claim")}>
                 Start claim via QR
+              </button>
+              <button type="button" className="btn btn-forest btn-sm" onClick={() => void onDelete()} disabled={deleting}>
+                {deleting ? "Deleting…" : "Delete"}
               </button>
             </div>
 

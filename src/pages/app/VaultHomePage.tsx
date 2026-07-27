@@ -70,9 +70,12 @@ export function VaultHomePage() {
         ) : null}
 
         {error ? (
-          <p className="auth-error" role="alert">
-            {error}
-          </p>
+          <div className="app-error-block" role="alert">
+            <p className="auth-error">{error}</p>
+            <button type="button" className="btn btn-forest btn-sm" onClick={() => void reload()}>
+              Retry
+            </button>
+          </div>
         ) : null}
 
         {loading ? <p className="app-muted">Loading…</p> : null}

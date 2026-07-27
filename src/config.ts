@@ -27,6 +27,9 @@ export const config = {
   playStoreUrl:
     import.meta.env.VITE_PLAY_STORE_URL ||
     "https://play.google.com/store/apps/details?id=com.warrly.app",
-  webAppUrl: import.meta.env.VITE_WEB_APP_URL || "https://app.warrly.app",
+  /** Prefer same-origin vault when enabled; fallback for legacy env */
+  webAppUrl: webAppEnabled
+    ? `${siteUrl}/login`
+    : import.meta.env.VITE_WEB_APP_URL || "https://app.warrly.app",
   supportEmail: import.meta.env.VITE_SUPPORT_EMAIL || "info@dataplexor.com",
 };
