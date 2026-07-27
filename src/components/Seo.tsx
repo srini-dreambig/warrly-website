@@ -57,7 +57,7 @@ export function Seo() {
   ];
 
   return (
-    <Helmet prioritizeSeoTags>
+    <Helmet>
       <html lang="en" />
       <title>{page.title}</title>
       <meta name="description" content={page.description} />
