@@ -19,6 +19,7 @@ import { ActionLandingPage } from "./pages/ActionLandingPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { AppShell, RequireAuth } from "./pages/app/AppShell";
 import { ForgotPasswordPage } from "./pages/app/ForgotPasswordPage";
+import { ResetPasswordPage } from "./pages/app/ResetPasswordPage";
 import { ItemDetailPage } from "./pages/app/ItemDetailPage";
 import { LoginPage } from "./pages/app/LoginPage";
 import { RegisterPage } from "./pages/app/RegisterPage";
@@ -41,6 +42,7 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/a/:token" element={<ActionLandingPage />} />
       <Route element={<RequireAuth />}>
         <Route element={<AppShell />}>

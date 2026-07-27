@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TEAMID.com.warrly.app",
+        "paths": ["/a/*", "/reset-password", "/login"]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["TEAMID.com.warrly.app"]
+  }
+}
