@@ -45,6 +45,22 @@ export function RedirectWwwAppToSubdomain() {
   );
 }
 
+/** www login/register → app subdomain so JWT stays on the same origin as the vault. */
+export function RedirectWwwAuthToSubdomain() {
+  useEffect(() => {
+    if (isAppHost()) return;
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") return;
+    const target = `${config.appUrl.replace(/\/$/, "")}${window.location.pathname}${window.location.search}${window.location.hash}`;
+    window.location.replace(target);
+  }, []);
+  return (
+    <main className="auth-page">
+      <p className="auth-lede">Opening sign-in…</p>
+    </main>
+  );
+}
+
 export function AppShell() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();

@@ -18,7 +18,12 @@ import { TermsPage } from "./pages/TermsPage";
 import { WaitlistPage } from "./pages/WaitlistPage";
 import { ActionLandingPage } from "./pages/ActionLandingPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { AppShell, RedirectWwwAppToSubdomain, RequireAuth } from "./pages/app/AppShell";
+import {
+  AppShell,
+  RedirectWwwAppToSubdomain,
+  RedirectWwwAuthToSubdomain,
+  RequireAuth,
+} from "./pages/app/AppShell";
 import { ForgotPasswordPage } from "./pages/app/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/app/ResetPasswordPage";
 import { ItemDetailPage } from "./pages/app/ItemDetailPage";
@@ -63,10 +68,21 @@ function MarketingHostRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password" element={<ResetPasswordPage />} />
+      {local ? (
+        <>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+        </>
+      ) : (
+        <>
+          <Route path="/login" element={<RedirectWwwAuthToSubdomain />} />
+          <Route path="/register" element={<RedirectWwwAuthToSubdomain />} />
+          <Route path="/forgot-password" element={<RedirectWwwAuthToSubdomain />} />
+          <Route path="/reset-password" element={<RedirectWwwAuthToSubdomain />} />
+        </>
+      )}
       <Route path="/a/:token" element={<ActionLandingPage />} />
 
       {local ? (
