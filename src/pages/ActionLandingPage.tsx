@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BrandLockup } from "../components/BrandLockup";
+import { config } from "../config";
 import { getActionLink, type ActionSession } from "../lib/api";
+import { vaultHomePath } from "../lib/hosts";
 
 export function ActionLandingPage() {
   const { token = "" } = useParams();
@@ -56,9 +58,9 @@ export function ActionLandingPage() {
           </a>
         ) : null}
         <p className="auth-foot">
-          <Link to="/login">Log in on web</Link>
+          <a href={config.loginPath}>Log in on web</a>
           {" · "}
-          <Link to="/app">Go to vault</Link>
+          <Link to={vaultHomePath()}>Go to vault</Link>
         </p>
       </div>
     </main>

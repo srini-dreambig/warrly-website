@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useLocation } from "react-router-dom";
 import { ART } from "../brand";
 import { config } from "../config";
+import { vaultHomePath } from "../lib/hosts";
 
 type Props = {
   /** When true, skip marketing chrome CTAs that assume public site layout */
@@ -10,7 +11,7 @@ type Props = {
 
 export function NotFoundPage({ compact = false }: Props) {
   const { pathname } = useLocation();
-  const homeTo = compact ? "/app" : "/";
+  const homeTo = compact ? vaultHomePath() : "/";
   const homeLabel = compact ? "Back to vault" : "Back to home";
 
   return (

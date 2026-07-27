@@ -4,6 +4,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { featurePages } from "./content/features";
 import { Layout } from "./Layout";
 import { AuthProvider } from "./lib/auth";
+import { isAppHost } from "./lib/hosts";
 import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
 import { DownloadPage } from "./pages/DownloadPage";
@@ -17,7 +18,7 @@ import { TermsPage } from "./pages/TermsPage";
 import { WaitlistPage } from "./pages/WaitlistPage";
 import { ActionLandingPage } from "./pages/ActionLandingPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { AppShell, RequireAuth } from "./pages/app/AppShell";
+import { AppShell, RedirectWwwAppToSubdomain, RequireAuth } from "./pages/app/AppShell";
 import { ForgotPasswordPage } from "./pages/app/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/app/ResetPasswordPage";
 import { ItemDetailPage } from "./pages/app/ItemDetailPage";
@@ -36,7 +37,7 @@ function MarketingLayout() {
   );
 }
 
-function AppRoutes() {
+function AppHostRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
@@ -46,11 +47,42 @@ function AppRoutes() {
       <Route path="/a/:token" element={<ActionLandingPage />} />
       <Route element={<RequireAuth />}>
         <Route element={<AppShell />}>
-          <Route path="/app" element={<VaultHomePage />} />
-          <Route path="/app/items/:itemId" element={<ItemDetailPage />} />
-          <Route path="/app/*" element={<NotFoundPage compact />} />
+          <Route path="/" element={<VaultHomePage />} />
+          <Route path="/items/:itemId" element={<ItemDetailPage />} />
+          <Route path="*" element={<NotFoundPage compact />} />
         </Route>
       </Route>
+    </Routes>
+  );
+}
+
+function MarketingHostRoutes() {
+  const local =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/a/:token" element={<ActionLandingPage />} />
+
+      {local ? (
+        <Route element={<RequireAuth />}>
+          <Route element={<AppShell />}>
+            <Route path="/app" element={<VaultHomePage />} />
+            <Route path="/app/items/:itemId" element={<ItemDetailPage />} />
+            <Route path="/app/*" element={<NotFoundPage compact />} />
+          </Route>
+        </Route>
+      ) : (
+        <>
+          <Route path="/app" element={<RedirectWwwAppToSubdomain />} />
+          <Route path="/app/*" element={<RedirectWwwAppToSubdomain />} />
+        </>
+      )}
 
       <Route element={<MarketingLayout />}>
         <Route path="/" element={<HomePage />} />
@@ -71,6 +103,10 @@ function AppRoutes() {
       </Route>
     </Routes>
   );
+}
+
+function AppRoutes() {
+  return isAppHost() ? <AppHostRoutes /> : <MarketingHostRoutes />;
 }
 
 export default function App() {

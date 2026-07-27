@@ -111,9 +111,9 @@ export function Layout({ children }: { children: ReactNode }) {
               </li>
             </ul>
             <div className="nav-actions">
-              <Link className="nav-login" to={config.loginPath}>
+              <a className="nav-login" href={config.loginPath}>
                 Log in
-              </Link>
+              </a>
               <Link
                 className="btn btn-forest btn-sm"
                 to={appPath}
@@ -495,7 +495,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 </li>
                 <li>
                   {config.webAppEnabled ? (
-                    <Link to="/login">Web vault</Link>
+                    <a href={config.webAppUrl}>Web vault</a>
                   ) : (
                     <a href={config.webAppUrl}>Web app</a>
                   )}
@@ -564,7 +564,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   </li>
                   <li>
                     {config.webAppEnabled ? (
-                      <Link to="/login">Web vault</Link>
+                      <a href={config.webAppUrl}>Web vault</a>
                     ) : (
                       <a href={config.webAppUrl}>Web app</a>
                     )}
@@ -577,7 +577,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   </li>
                   {config.webAppEnabled ? (
                     <li>
-                      <Link to="/login">Log in</Link>
+                      <a href={config.loginPath}>Log in</a>
                     </li>
                   ) : null}
                   <li>

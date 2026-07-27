@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthSplitLayout } from "../../components/AuthSplitLayout";
@@ -6,6 +6,7 @@ import { ART } from "../../brand";
 import { config } from "../../config";
 import { useAuth } from "../../lib/auth";
 import { formatApiError } from "../../lib/api";
+import { goToVaultAfterAuth } from "../../lib/hosts";
 
 export function RegisterPage() {
   const { user, loading, register } = useAuth();
@@ -16,8 +17,18 @@ export function RegisterPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (!loading && user) goToVaultAfterAuth(navigate);
+  }, [loading, user, navigate]);
+
   if (!config.webAppEnabled) return <Navigate to="/waitlist" replace />;
-  if (!loading && user) return <Navigate to="/app" replace />;
+  if (!loading && user) {
+    return (
+      <main className="auth-page">
+        <p className="auth-lede">Opening your vault…</p>
+      </main>
+    );
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -25,7 +36,7 @@ export function RegisterPage() {
     setSubmitting(true);
     try {
       await register(email.trim(), password, name.trim() || email.split("@")[0]);
-      navigate("/app", { replace: true });
+      goToVaultAfterAuth(navigate);
     } catch (err) {
       setError(formatApiError(err instanceof Error ? err.message : err, "Could not create account."));
     } finally {

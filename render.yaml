@@ -16,7 +16,9 @@ services:
         value: "true"
       - key: VITE_SITE_URL
         value: https://www.warrly.in
+      - key: VITE_APP_URL
+        value: https://app.warrly.in
       - key: NODE_VERSION
         value: "22.14.0"
-      # After adding www.warrly.in in Render Dashboard → Custom Domains,
-      # set Hostinger DNS per SHIP notes (CNAME www → warrly-webapp.onrender.com).
+      # Custom domains on warrly-webapp: www.warrly.in + app.warrly.in
+      # Hostinger: CNAME www → warrly-webapp.onrender.com ; CNAME app → warrly-webapp.onrender.com

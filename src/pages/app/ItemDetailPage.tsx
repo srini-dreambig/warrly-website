@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ActionQrModal } from "../../components/ActionQrModal";
 import { deleteItem, fetchItem } from "../../lib/api";
+import { vaultHomePath } from "../../lib/hosts";
 
 type HandoffAction = "add_document" | "capture_serial" | "start_claim";
 
@@ -41,7 +42,7 @@ export function ItemDetailPage() {
     setDeleting(true);
     try {
       await deleteItem(itemId);
-      navigate("/app", { replace: true });
+      navigate(vaultHomePath(), { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not delete item.");
       setDeleting(false);
@@ -58,7 +59,7 @@ export function ItemDetailPage() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="wrap app-detail">
-        <Link className="app-back" to="/app">
+        <Link className="app-back" to={vaultHomePath()}>
           ← Back to vault
         </Link>
         {banner ? (

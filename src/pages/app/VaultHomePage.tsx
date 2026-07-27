@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ActionQrModal } from "../../components/ActionQrModal";
 import { fetchItems, fetchStats, type VaultItem, type VaultStats } from "../../lib/api";
+import { vaultItemPath } from "../../lib/hosts";
 
 function money(value: number, currency = "INR") {
   try {
@@ -117,7 +118,7 @@ export function VaultHomePage() {
             <ul className="app-item-list">
               {items.map((item) => (
                 <li key={item.item_id}>
-                  <Link to={`/app/items/${item.item_id}`}>
+                  <Link to={vaultItemPath(item.item_id)}>
                     <div>
                       <strong>{item.name || "Untitled item"}</strong>
                       <span>

@@ -780,3 +780,230 @@
     width: min(100%, 280px);
   }
 }
+
+/* —— Dashboard shell (app.warrly.in) —— */
+.dash-shell {
+  --dash-sidebar-w: 260px;
+  --dash-sidebar-collapsed: 76px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--dash-sidebar-w) minmax(0, 1fr);
+  background: #f3f6f5;
+}
+
+.dash-shell--collapsed {
+  grid-template-columns: var(--dash-sidebar-collapsed) minmax(0, 1fr);
+}
+
+.dash-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 14px;
+  background: linear-gradient(180deg, #0a4a41 0%, #0f5d50 55%, #08403a 100%);
+  color: #f7faf8;
+  z-index: 30;
+}
+
+.dash-sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 48px;
+}
+
+.dash-brand.brand-lockup {
+  color: #f7faf8;
+  min-width: 0;
+}
+
+.dash-brand .brand-tagline {
+  color: rgba(247, 250, 248, 0.72);
+}
+
+.dash-shell--collapsed .dash-brand .brand-name,
+.dash-shell--collapsed .dash-brand .brand-tagline {
+  display: none;
+}
+
+.dash-collapse-btn {
+  border: 1px solid rgba(247, 250, 248, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f7faf8;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.dash-collapse-btn--mobile {
+  display: none;
+  width: auto;
+  padding: 8px 12px;
+  color: var(--forest);
+  border-color: rgba(15, 93, 80, 0.2);
+  background: #fff;
+}
+
+.dash-nav {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  flex: 1;
+  align-content: start;
+}
+
+.dash-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  color: rgba(247, 250, 248, 0.88);
+  text-decoration: none;
+  font-weight: var(--fw);
+  font-size: 14px;
+}
+
+.dash-link:hover,
+.dash-link.is-active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.dash-link-icon {
+  width: 1.25rem;
+  text-align: center;
+  flex: 0 0 auto;
+  opacity: 0.9;
+}
+
+.dash-shell--collapsed .dash-link {
+  justify-content: center;
+  padding-inline: 10px;
+}
+
+.dash-shell--collapsed .dash-link-label,
+.dash-shell--collapsed .dash-user-email,
+.dash-shell--collapsed .dash-user-name,
+.dash-shell--collapsed .dash-logout {
+  display: none;
+}
+
+.dash-sidebar-foot {
+  margin-top: auto;
+  display: grid;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dash-user-name {
+  display: block;
+  font-size: 13px;
+  font-weight: var(--fw);
+}
+
+.dash-user-email {
+  display: block;
+  font-size: 11px;
+  opacity: 0.7;
+  word-break: break-all;
+}
+
+.dash-logout {
+  justify-self: stretch;
+}
+
+.dash-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dash-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(15, 93, 80, 0.08);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.dash-topbar-title {
+  margin: 0;
+  font-weight: var(--fw);
+  color: var(--forest);
+}
+
+.dash-topbar-site {
+  margin-left: auto;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.dash-content {
+  flex: 1;
+  padding: 8px 0 40px;
+}
+
+.dash-content .app-main {
+  padding-top: 12px;
+}
+
+.dash-backdrop {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .dash-shell,
+  .dash-shell--collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(280px, 86vw);
+    transform: translateX(-105%);
+    transition: transform 180ms ease;
+  }
+
+  .dash-shell:not(.dash-shell--collapsed) .dash-sidebar {
+    transform: translateX(0);
+  }
+
+  .dash-shell--collapsed .dash-link-label,
+  .dash-shell--collapsed .dash-user-email,
+  .dash-shell--collapsed .dash-user-name,
+  .dash-shell--collapsed .dash-logout,
+  .dash-shell--collapsed .dash-brand .brand-name,
+  .dash-shell--collapsed .dash-brand .brand-tagline {
+    display: initial;
+  }
+
+  .dash-collapse-btn--mobile {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .dash-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: 0;
+    background: rgba(8, 64, 58, 0.45);
+    z-index: 20;
+  }
+}
