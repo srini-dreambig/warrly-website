@@ -111,9 +111,9 @@ export function Layout({ children }: { children: ReactNode }) {
               </li>
             </ul>
             <div className="nav-actions">
-              <a className="nav-login" href={config.webAppUrl}>
+              <Link className="nav-login" to={config.loginPath}>
                 Log in
-              </a>
+              </Link>
               <Link
                 className="btn btn-forest btn-sm"
                 to={appPath}
@@ -494,7 +494,11 @@ export function Layout({ children }: { children: ReactNode }) {
                   <a href={config.playStoreUrl}>Google Play</a>
                 </li>
                 <li>
-                  <a href={config.webAppUrl}>Web app</a>
+                  {config.webAppEnabled ? (
+                    <Link to="/login">Web vault</Link>
+                  ) : (
+                    <a href={config.webAppUrl}>Web app</a>
+                  )}
                 </li>
               </ul>
             </div>
@@ -559,7 +563,11 @@ export function Layout({ children }: { children: ReactNode }) {
                     <a href={config.playStoreUrl}>Google Play</a>
                   </li>
                   <li>
-                    <a href={config.webAppUrl}>Web app</a>
+                    {config.webAppEnabled ? (
+                      <Link to="/login">Web vault</Link>
+                    ) : (
+                      <a href={config.webAppUrl}>Web app</a>
+                    )}
                   </li>
                 </>
               ) : (
@@ -567,6 +575,11 @@ export function Layout({ children }: { children: ReactNode }) {
                   <li>
                     <Link to={appPath}>Join waitlist</Link>
                   </li>
+                  {config.webAppEnabled ? (
+                    <li>
+                      <Link to="/login">Log in</Link>
+                    </li>
+                  ) : null}
                   <li>
                     <Link to="/plans">See plans</Link>
                   </li>

@@ -27,6 +27,25 @@ const initial: FormState = {
   consent: false,
 };
 
+function humanizeWaitlistError(raw: unknown, status?: number): string {
+  if (typeof raw === "string" && raw.trim() && !raw.includes("[object Object]")) return raw.trim();
+  if (raw && typeof raw === "object") {
+    const obj = raw as Record<string, unknown>;
+    if (typeof obj.message === "string") return obj.message;
+    if (typeof obj.error === "string") return obj.error;
+    if (Array.isArray(obj.errors) && typeof obj.errors[0] === "string") return obj.errors[0];
+    try {
+      const s = JSON.stringify(raw);
+      if (s && s !== "{}" && s !== "[]") return s;
+    } catch {
+      /* ignore */
+    }
+  }
+  return status
+    ? `Could not join the waitlist (${status}). Please try again.`
+    : "Could not join the waitlist. Please try again.";
+}
+
 export function WaitlistPage() {
   const [params] = useSearchParams();
   const source = params.get("src") || params.get("source") || "web";
@@ -63,16 +82,16 @@ export function WaitlistPage() {
       });
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
-        error?: string;
+        error?: unknown;
         id?: string;
       };
       if (!res.ok || !data.ok) {
-        throw new Error(data.error || "Could not join the waitlist. Please try again.");
+        throw new Error(humanizeWaitlistError(data.error, res.status));
       }
       setDoneId(data.id || "ok");
       setForm(initial);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(humanizeWaitlistError(err instanceof Error ? err.message : err));
     } finally {
       setSubmitting(false);
     }

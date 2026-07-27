@@ -1728,7 +1728,7 @@ h4,
 }
 
 .plan-features li::before {
-  content: "Â·";
+  content: "\00B7";
   position: absolute;
   left: 0;
   color: var(--amber);

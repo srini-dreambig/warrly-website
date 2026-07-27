@@ -253,6 +253,10 @@ export function HomePage() {
                 <a className="btn btn-ghost-light" href={config.webAppUrl} target="_blank" rel="noreferrer">
                   Web app
                 </a>
+              ) : config.webAppEnabled ? (
+                <Link className="btn btn-ghost-light" to="/login">
+                  Log in to vault
+                </Link>
               ) : (
                 <Link className="btn btn-ghost-light" to="/plans">
                   See plans
