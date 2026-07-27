@@ -16,15 +16,17 @@
   color: var(--forest-dark);
   overflow: hidden;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: clamp(12px, 2vh, 24px);
-  padding: clamp(20px, 3.5vh, 40px) clamp(24px, 4vw, 48px);
-  align-content: stretch;
+  grid-template-rows: auto auto auto;
+  gap: clamp(16px, 2.4vh, 28px);
+  padding: clamp(24px, 4vh, 48px) clamp(28px, 4.5vw, 56px);
+  align-content: center;
+  justify-items: center;
+  text-align: center;
 }
 
 .auth-split-brand.brand-lockup {
   color: var(--forest);
-  justify-self: start;
+  justify-self: center;
 }
 
 .auth-split-brand .brand-tagline {
@@ -32,8 +34,8 @@
 }
 
 .auth-split-art {
-  width: min(100%, 520px);
-  max-height: 100%;
+  width: min(72%, 340px);
+  max-height: min(38vh, 320px);
   height: auto;
   object-fit: contain;
   object-position: center;
@@ -50,16 +52,17 @@
 
 .auth-split-quote {
   margin: 0;
-  max-width: 36ch;
-  justify-self: start;
+  max-width: 34ch;
+  justify-self: center;
+  text-align: center;
   animation: auth-rise 900ms var(--ease) both;
   animation-delay: 80ms;
 }
 
 .auth-split-quote p {
-  margin: 0 0 10px;
-  font-size: clamp(1.05rem, 1.8vw, 1.45rem);
-  line-height: 1.35;
+  margin: 0 0 12px;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.4;
   letter-spacing: -0.02em;
   font-weight: var(--fw);
   color: var(--forest-dark);
@@ -291,15 +294,16 @@
 
   .auth-split-panel {
     padding: 16px 18px 12px;
-    gap: 8px;
+    gap: 10px;
   }
 
   .auth-split-art {
-    width: min(100%, 220px);
+    width: min(58%, 200px);
+    max-height: min(22vh, 180px);
   }
 
   .auth-split-quote p {
-    font-size: 0.98rem;
+    font-size: 1rem;
   }
 
   .auth-split-mobile-brand {
