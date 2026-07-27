@@ -1,6 +1,8 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { DownloadQr } from "../components/DownloadQr";
+import { config } from "../config";
+import { formatApiError } from "../lib/api";
 
 type Platform = "ios" | "android" | "both";
 type Intent = "personal" | "business" | "both";
@@ -75,7 +77,7 @@ export function WaitlistPage() {
         source,
         userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
       };
-      const res = await fetch("/api/waitlist", {
+      const res = await fetch(`${config.apiUrl}/api/waitlist`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
@@ -83,10 +85,13 @@ export function WaitlistPage() {
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
         error?: unknown;
+        detail?: unknown;
         id?: string;
       };
       if (!res.ok || !data.ok) {
-        throw new Error(humanizeWaitlistError(data.error, res.status));
+        throw new Error(
+          humanizeWaitlistError(data.error ?? data.detail ?? formatApiError(data, ""), res.status),
+        );
       }
       setDoneId(data.id || "ok");
       setForm(initial);
