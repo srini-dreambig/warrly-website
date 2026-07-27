@@ -10,7 +10,6 @@ import {
   type VaultItem,
   type VaultStats,
 } from "../../lib/api";
-import { useAuth } from "../../lib/auth";
 import {
   vaultClaimPath,
   vaultClaimsPath,
@@ -32,7 +31,6 @@ function money(value: number, currency = "INR") {
 }
 
 export function HomeDashboardPage() {
-  const { user } = useAuth();
   const [stats, setStats] = useState<VaultStats | null>(null);
   const [items, setItems] = useState<VaultItem[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -65,7 +63,6 @@ export function HomeDashboardPage() {
     void reload();
   }, [reload]);
 
-  const firstName = (user?.name || "there").split(" ")[0];
   const attention = items.filter((i) => i.status === "expiring" || i.status === "expired").slice(0, 5);
   const recent = items.slice(0, 6);
   const openClaims = claims.filter((c) => c.status !== "resolved" && c.status !== "denied").slice(0, 5);
@@ -74,9 +71,7 @@ export function HomeDashboardPage() {
     <main className="app-main">
       <div className="wrap">
         <div className="app-page-head">
-          <p className="page-eyebrow">Home</p>
-          <h1>Hello, {firstName}</h1>
-          <p className="lead">Coverage overview across your vault.</p>
+          <h1>Home</h1>
         </div>
 
         {error ? (

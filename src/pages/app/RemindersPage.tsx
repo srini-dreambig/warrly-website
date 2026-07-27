@@ -55,9 +55,7 @@ export function RemindersPage() {
     <main className="app-main">
       <div className="wrap">
         <div className="app-page-head">
-          <p className="page-eyebrow">Reminders</p>
-          <h1>What needs a nudge</h1>
-          <p className="lead">Warranty and claim follow-ups from your vault.</p>
+          <h1>Reminders</h1>
         </div>
 
         {error ? <p className="auth-error" role="alert">{error}</p> : null}

@@ -78,11 +78,9 @@ export function ItemDetailPage() {
         ) : null}
         {item ? (
           <>
-            <p className="page-eyebrow">{String(item.category || "Item")}</p>
             <h1>{String(item.name || "Untitled item")}</h1>
-            <p className="lead">
-              {[item.brand, item.model, item.serial].filter(Boolean).map(String).join(" · ") ||
-                "No identity fields yet"}
+            <p className="app-muted">
+              {[item.brand, item.model, item.serial].filter(Boolean).map(String).join(" · ") || "No identity fields yet"}
             </p>
 
             <div className="app-handoff-row">

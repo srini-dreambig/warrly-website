@@ -108,23 +108,23 @@ export function AppShell() {
   }
 
   const home = vaultHomePath();
+  const collapseLabel = collapsed ? "Expand navigation" : "Collapse navigation";
 
   return (
     <div className={`dash-shell${collapsed ? " dash-shell--collapsed" : ""}`}>
       <aside className="dash-sidebar" aria-label="Main navigation">
-        <div className="dash-sidebar-top">
+        <div className="dash-brand-row">
+          <BrandLockup to={home} className="dash-brand" />
           <button
             type="button"
-            className="dash-collapse-btn"
+            className="dash-collapse-btn dash-collapse-btn--edge"
             aria-expanded={!collapsed}
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+            aria-label={collapseLabel}
             onClick={() => setCollapsed((v) => !v)}
           >
             <span aria-hidden="true">{collapsed ? "»" : "«"}</span>
           </button>
         </div>
-
-        <BrandLockup to={home} className="dash-brand" />
 
         <nav className="dash-nav">
           {NAV.map((item) => (
@@ -154,16 +154,15 @@ export function AppShell() {
       </aside>
 
       <div className="dash-main">
-        <header className="dash-topbar">
+        <header className="dash-topbar dash-topbar--mobile">
           <button
             type="button"
             className="dash-collapse-btn dash-collapse-btn--mobile"
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+            aria-label={collapseLabel}
             onClick={() => setCollapsed((v) => !v)}
           >
             Menu
           </button>
-          <p className="dash-topbar-title">Vault</p>
         </header>
         <div className="dash-content">
           <Outlet />

@@ -83,9 +83,7 @@ export function AccountPage() {
     <main className="app-main">
       <div className="wrap">
         <div className="app-page-head">
-          <p className="page-eyebrow">Account</p>
-          <h1>Your profile</h1>
-          <p className="lead">Manage identity, plan, export, and account deletion.</p>
+          <h1>Account</h1>
         </div>
 
         {error ? <p className="auth-error" role="alert">{error}</p> : null}
@@ -102,8 +100,8 @@ export function AccountPage() {
           </p>
           <p className="app-muted">
             {user?.tier === "free"
-              ? "Free includes a limited item vault. Paid plans are purchased in the iOS/Android app (App Store / Play billing)."
-              : "Thanks for supporting Warrly. Manage billing in the mobile app stores."}
+              ? "Paid plans are purchased in the iOS/Android app."
+              : "Manage billing in the mobile app stores."}
           </p>
         </section>
 
@@ -136,7 +134,7 @@ export function AccountPage() {
 
         <section className="app-panel" style={{ marginTop: 16 }}>
           <h2>Danger zone</h2>
-          <p className="app-muted">Hard-deletes your account, items, claims, and related vault data.</p>
+          <p className="app-muted">Permanently deletes your account and vault data.</p>
           <button type="button" className="btn btn-amber" disabled={busy} onClick={() => void onDelete()}>
             Delete account
           </button>

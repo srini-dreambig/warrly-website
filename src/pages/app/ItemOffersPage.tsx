@@ -70,9 +70,7 @@ export function ItemOffersPage() {
           ← Back to item
         </Link>
         <div className="app-page-head">
-          <p className="page-eyebrow">Partner offers</p>
-          <h1>Extend coverage</h1>
-          <p className="lead">Offers matched to {itemName || "this item"} from active partners.</p>
+          <h1>Offers</h1>
         </div>
 
         {error ? <p className="auth-error" role="alert">{error}</p> : null}

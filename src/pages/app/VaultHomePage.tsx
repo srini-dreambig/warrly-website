@@ -51,13 +51,7 @@ export function VaultHomePage() {
     <main className="app-main">
       <div className="wrap">
         <div className="app-page-head app-page-head--row">
-          <div>
-            <p className="page-eyebrow">Inventory</p>
-            <h1>Your items</h1>
-            <p className="lead">
-              Browse and open items here. Camera capture uses a temporary QR on your phone, then syncs back.
-            </p>
-          </div>
+          <h1>Inventory</h1>
           <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>
             Add item via QR
           </button>
@@ -108,7 +102,7 @@ export function VaultHomePage() {
           </div>
           {!loading && items.length === 0 ? (
             <div className="app-empty">
-              <p>No items yet. Generate a QR, scan with your phone, and add the first receipt in Warrly.</p>
+              <p>No items yet. Use Add item via QR to capture on your phone.</p>
               <button type="button" className="btn btn-amber" onClick={() => setQrOpen(true)}>
                 Generate add-item QR
               </button>

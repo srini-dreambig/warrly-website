@@ -86,9 +86,8 @@ export function ClaimDetailPage() {
 
         {claim ? (
           <>
-            <p className="page-eyebrow">{claim.status || "draft"}</p>
             <h1>{claim.item_name || "Claim"}</h1>
-            <p className="lead">{claim.issue || "No issue description"}</p>
+            <p className="app-muted">{claim.issue || "No issue description"}</p>
 
             <div className="app-handoff-row">
               {claim.item_id ? (

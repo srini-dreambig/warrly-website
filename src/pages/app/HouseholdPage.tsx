@@ -105,9 +105,7 @@ export function HouseholdPage() {
     <main className="app-main">
       <div className="wrap">
         <div className="app-page-head">
-          <p className="page-eyebrow">Household</p>
-          <h1>Shared vault</h1>
-          <p className="lead">Invite family members to share coverage and reminders.</p>
+          <h1>Household</h1>
         </div>
 
         {error ? <p className="auth-error" role="alert">{error}</p> : null}
@@ -155,7 +153,6 @@ export function HouseholdPage() {
             {isOwner ? (
               <section className="app-panel" style={{ marginTop: 16 }}>
                 <h2>Invite</h2>
-                <p className="app-muted">Create a single-use code for another person to join.</p>
                 {inviteCode ? (
                   <p>
                     <strong className="app-invite-code">{inviteCode}</strong>

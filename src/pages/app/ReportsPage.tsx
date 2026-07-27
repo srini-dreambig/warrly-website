@@ -25,9 +25,7 @@ export function ReportsPage() {
     <main className="app-main">
       <div className="wrap">
         <div className="app-page-head">
-          <p className="page-eyebrow">Reports</p>
-          <h1>Shareable PDFs</h1>
-          <p className="lead">Export a home inventory report from the live vault data.</p>
+          <h1>Reports</h1>
         </div>
 
         {error ? <p className="auth-error" role="alert">{error}</p> : null}
@@ -38,8 +36,7 @@ export function ReportsPage() {
         ) : null}
 
         <section className="app-panel">
-          <h2>Home inventory report</h2>
-          <p className="app-muted">PDF of items and coverage in your personal vault.</p>
+          <h2>Home inventory</h2>
           <button type="button" className="btn btn-amber" disabled={busy} onClick={() => void downloadInventory()}>
             {busy ? "Generating…" : "Download PDF"}
           </button>

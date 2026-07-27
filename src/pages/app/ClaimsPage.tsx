@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createClaim, fetchClaims, fetchItems, type Claim, type VaultItem } from "../../lib/api";
-import { vaultClaimPath, vaultItemPath } from "../../lib/hosts";
+import { vaultClaimPath } from "../../lib/hosts";
 
 export function ClaimsPage() {
   const navigate = useNavigate();
@@ -51,9 +51,7 @@ export function ClaimsPage() {
     <main className="app-main">
       <div className="wrap">
         <div className="app-page-head">
-          <p className="page-eyebrow">Claims</p>
-          <h1>Claim inbox</h1>
-          <p className="lead">Draft, file, and track warranty claims against items in your vault.</p>
+          <h1>Claims</h1>
         </div>
 
         {error ? <p className="auth-error" role="alert">{error}</p> : null}
@@ -109,13 +107,6 @@ export function ClaimsPage() {
             ))}
           </ul>
         )}
-
-        {items.length ? (
-          <p className="app-muted" style={{ marginTop: 16 }}>
-            Tip: open an{" "}
-            <Link to={vaultItemPath(items[0].item_id)}>item</Link> for QR handoff capture on phone.
-          </p>
-        ) : null}
       </div>
     </main>
   );
