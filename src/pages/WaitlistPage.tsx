@@ -93,6 +93,29 @@ export function WaitlistPage() {
           humanizeWaitlistError(data.error ?? data.detail ?? formatApiError(data, ""), res.status),
         );
       }
+      // Browser-side FormSubmit (Render server IPs are often 403'd by FormSubmit)
+      try {
+        await fetch("https://formsubmit.co/ajax/info@dataplexor.com", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            _subject: `[Warrly waitlist] ${payload.fullName} · ${payload.intent}`,
+            _template: "table",
+            _captcha: "false",
+            name: payload.fullName,
+            email: payload.email,
+            phone: payload.phone,
+            platform: payload.platform,
+            intent: payload.intent,
+            company: payload.company || "—",
+            city: payload.city || "—",
+            source: payload.source,
+            waitlist_id: data.id || "",
+          }),
+        });
+      } catch {
+        /* Neon save already succeeded — notify is best-effort */
+      }
       setDoneId(data.id || "ok");
       setForm(initial);
     } catch (err) {
