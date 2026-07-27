@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { FeatureRoute } from "./components/FeatureRoute";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { featurePages } from "./content/features";
@@ -16,6 +16,7 @@ import { ReferralPage } from "./pages/ReferralPage";
 import { TermsPage } from "./pages/TermsPage";
 import { WaitlistPage } from "./pages/WaitlistPage";
 import { ActionLandingPage } from "./pages/ActionLandingPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 import { AppShell, RequireAuth } from "./pages/app/AppShell";
 import { ForgotPasswordPage } from "./pages/app/ForgotPasswordPage";
 import { ItemDetailPage } from "./pages/app/ItemDetailPage";
@@ -45,6 +46,7 @@ function AppRoutes() {
         <Route element={<AppShell />}>
           <Route path="/app" element={<VaultHomePage />} />
           <Route path="/app/items/:itemId" element={<ItemDetailPage />} />
+          <Route path="/app/*" element={<NotFoundPage compact />} />
         </Route>
       </Route>
 
@@ -63,7 +65,7 @@ function AppRoutes() {
         {featurePages.map((p) => (
           <Route key={p.path} path={p.path} element={<FeatureRoute />} />
         ))}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
