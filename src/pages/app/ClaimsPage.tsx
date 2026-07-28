@@ -74,97 +74,98 @@ export function ClaimsPage() {
   return (
     <main className="app-main">
       <div className="wrap wrap--vault">
-        <div className="app-page-head">
+        <div className="app-page-head app-page-head--row">
           <h1>Claims</h1>
+          {!loading ? <span className="app-muted">{claims.length} in inbox</span> : null}
         </div>
 
         {error ? <p className="auth-error" role="alert">{error}</p> : null}
 
-        <div className="app-split">
-          <section className="app-split-main">
+        <form className="app-compose" onSubmit={(e) => void onCreate(e)}>
+          <div className="app-compose-inputs app-panel app-form-panel">
+            <h2>New claim</h2>
+            <label>
+              Item
+              <select value={itemId} onChange={(e) => setItemId(e.target.value)} required>
+                <option value="" disabled>
+                  Select item
+                </option>
+                {items.map((it) => (
+                  <option key={it.item_id} value={it.item_id}>
+                    {it.name || "Untitled"}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              What happened?
+              <textarea
+                rows={6}
+                value={issue}
+                onChange={(e) => {
+                  setIssue(e.target.value);
+                  setLetterPreview("");
+                }}
+                placeholder="e.g. screen flickering after 2 months"
+                required
+              />
+            </label>
+            <div className="app-form-actions">
+              <button
+                type="button"
+                className="btn btn-forest app-ai-assist-btn"
+                disabled={assisting || !items.length}
+                onClick={() => void onAssist()}
+              >
+                <Sparkles size={16} strokeWidth={2} aria-hidden="true" />
+                {assisting ? "AI drafting…" : "AI Assistant"}
+              </button>
+              <button type="submit" className="btn btn-amber" disabled={creating || !items.length}>
+                <FilePlus2 size={16} strokeWidth={2} aria-hidden="true" />
+                {creating ? "Creating…" : "Save draft"}
+              </button>
+            </div>
+          </div>
+
+          <div className="app-compose-preview app-panel">
+            <div className="app-items-head">
+              <h2>Letter preview</h2>
+              {aiModel ? <span>{aiModel.replace(":free", "")}</span> : null}
+            </div>
+            {letterPreview ? (
+              <pre className="app-pre app-pre--compose">{letterPreview}</pre>
+            ) : (
+              <div className="app-compose-placeholder">
+                <Sparkles size={22} strokeWidth={1.5} aria-hidden="true" />
+                <p>Run AI Assistant to generate a warranty letter for the selected item.</p>
+              </div>
+            )}
+          </div>
+        </form>
+
+        {loading ? <p className="app-muted">Loading inbox…</p> : null}
+
+        {!loading && claims.length > 0 ? (
+          <section className="app-inbox">
             <div className="app-items-head">
               <h2>Inbox</h2>
               <span>{claims.length}</span>
             </div>
-            {loading ? <p className="app-muted">Loading…</p> : null}
-            {!loading && claims.length === 0 ? (
-              <div className="app-empty">
-                <p>No claims yet.</p>
-              </div>
-            ) : (
-              <ul className="app-item-list">
-                {claims.map((c) => (
-                  <li key={c.claim_id}>
-                    <Link to={vaultClaimPath(c.claim_id)}>
-                      <div>
-                        <strong>{c.item_name || "Claim"}</strong>
-                        <span className="app-line-clamp">{c.issue || "No issue text"}</span>
-                      </div>
-                      <em className="app-status">{c.status || "draft"}</em>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <ul className="app-item-list">
+              {claims.map((c) => (
+                <li key={c.claim_id}>
+                  <Link to={vaultClaimPath(c.claim_id)}>
+                    <div>
+                      <strong>{c.item_name || "Claim"}</strong>
+                      <span className="app-line-clamp">{c.issue || "No issue text"}</span>
+                    </div>
+                    <em className="app-status">{c.status || "draft"}</em>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
-
-          <aside className="app-split-side">
-            <form className="app-panel app-form-panel" onSubmit={(e) => void onCreate(e)}>
-              <h2>Draft claim</h2>
-              <label>
-                Item
-                <select value={itemId} onChange={(e) => setItemId(e.target.value)} required>
-                  <option value="" disabled>
-                    Select item
-                  </option>
-                  {items.map((it) => (
-                    <option key={it.item_id} value={it.item_id}>
-                      {it.name || "Untitled"}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                What happened?
-                <textarea
-                  rows={4}
-                  value={issue}
-                  onChange={(e) => {
-                    setIssue(e.target.value);
-                    setLetterPreview("");
-                  }}
-                  placeholder="e.g. screen flickering after 2 months"
-                  required
-                />
-              </label>
-              <div className="app-form-actions">
-                <button
-                  type="button"
-                  className="btn btn-forest app-ai-assist-btn"
-                  disabled={assisting || !items.length}
-                  onClick={() => void onAssist()}
-                >
-                  <Sparkles size={16} strokeWidth={2} aria-hidden="true" />
-                  {assisting ? "AI drafting…" : "AI Assistant"}
-                </button>
-                <button type="submit" className="btn btn-amber" disabled={creating || !items.length}>
-                  <FilePlus2 size={16} strokeWidth={2} aria-hidden="true" />
-                  {creating ? "Creating…" : "Save draft"}
-                </button>
-              </div>
-              <p className="app-muted">Type a short issue, then use AI Assistant to polish the claim letter.</p>
-              {letterPreview ? (
-                <div className="app-ai-preview">
-                  <div className="app-items-head">
-                    <h2>Letter preview</h2>
-                    {aiModel ? <span>{aiModel.replace(":free", "")}</span> : null}
-                  </div>
-                  <pre className="app-pre">{letterPreview}</pre>
-                </div>
-              ) : null}
-            </form>
-          </aside>
-        </div>
+        ) : null}
       </div>
     </main>
   );
